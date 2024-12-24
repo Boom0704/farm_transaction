@@ -1,0 +1,24 @@
+package com.future.blue.price.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+/**
+ * Class Name  : PriceController
+ * Author      : boom
+ * Created Date: 2024. 12. 9.
+ * Version: 1.0
+ * Purpose:   
+ * Description: 
+ */
+@Controller
+public class PriceController {
+
+    @GetMapping("/price/{id}")
+    public String priceView(@PathVariable("id") String id, Model model) {
+        model.addAttribute("priceId", id); // id 값을 뷰로 전달
+        return "market/marketView";
+    }
+}

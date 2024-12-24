@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.blue.sell.dao.ISellDAO">
+
+	<!-- 
+    INSERT 문: PRODUCTS_SELL 테이블에 새 판매 정보를 추가합니다.
+    - SEQ_SELL.NEXTVAL을 사용하여 SELL_ID를 생성합니다.
+    - 입력 값:
+        - SELL_TITLE: 판매 제목
+        - SELL_CONTENTS: 판매 상세 내용
+        - MEM_ID: 회원 ID
+        - SELL_PRICE: 판매 가격
+        - SELL_REGION: 거래 희망 장소
+    - 기본값:
+        - SELL_YN: 'Y' (판매 활성화 상태)
+        - RESERVED_YN: 'N' (예약 여부)
+        - CREATE_DT, UPDATE_DT: 현재 날짜 (SYSDATE)
+	-->
+	<insert id="insertSellInfo" parameterType="SellVO">
+	    <selectKey keyProperty="sellId" resultType="int" order="BEFORE">
+	        SELECT SEQ_SELL.NEXTVAL FROM dual
+	    </selectKey>
+		    INSERT INTO PRODUCTS_SELL (
+		        SELL_ID,
+		        SELL_TITLE,
+		        SELL_CONTENTS,
+		        MEM_ID,
+		        SELL_PRICE,
+		        SELL_YN,
+		        RESERVED_YN,
+		        CREATE_DT,
+		        UPDATE_DT,
+		        SELL_REGION
+		    ) VALUES (
+		        #{sellId},
+		        #{sellTitle},
+		        #{sellContents},
+		        #{memId},
+		        #{sellPrice},
+		        'Y',
+		        'N',
+		        SYSDATE,
+		        SYSDATE,
+		        #{sellRegion}
+		    )
+		</insert>
+		
+		<!-- 
+	    INSERT 문: PRODUCT_PHOTOS 테이블에 새 사진 정보를 추가합니다.
+	    - SEQ_PHOTO.NEXTVAL을 사용하여 PROD_PHOTO_ID를 생성합니다.
+	    - 입력 값:
+	        - PROD_PHOTO_PATH: 사진 경로
+	        - PHOTO_NAME: 사진 이름
+	        - PROD_ID: 관련된 제품 ID
+	    - 기본값:
+	        - CREATE_DT, UPDATE_DT: 현재 날짜 (SYSDATE)
+		-->
+		<insert id="insertPhoto" parameterType="PhotoVO">
+		    <selectKey keyProperty="prodPhotoId" resultType="int" order="BEFORE">
+		        SELECT SEQ_PHOTO.NEXTVAL FROM dual
+		    </selectKey>
+			    INSERT INTO PRODUCT_PHOTOS (
+			        PROD_PHOTO_ID,
+			        CREATE_DT,
+			        UPDATE_DT,
+			        PROD_PHOTO_PATH,
+			        PHOTO_NAME,
+			        PROD_ID
+			    ) VALUES (
+			        #{prodPhotoId},
+			        SYSDATE,
+			        SYSDATE,
+			        #{prodPhotoPath},
+			        #{photoName},
+			        #{prodId}
+			    )
+		</insert>
+	
+
+</mapper>

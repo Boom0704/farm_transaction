@@ -1,0 +1,63 @@
+package com.future.blue.purchase.vo;
+
+public class ChatVO {
+	private String chatId;
+    private String sellerMemId;
+    private String buyerMemId;
+    private String chatTime;
+    private String chatContents;
+    private String updateDt;
+    private String lastMessage;
+	
+    public String getChatId() {
+		return chatId;
+	}
+	public void setChatId(String chatId) {
+		this.chatId = chatId;
+	}
+	public String getSellerMemId() {
+		return sellerMemId;
+	}
+	public void setSellerMemId(String sellerMemId) {
+		this.sellerMemId = sellerMemId;
+	}
+	public String getBuyerMemId() {
+		return buyerMemId;
+	}
+	public void setBuyerMemId(String buyerMemId) {
+		this.buyerMemId = buyerMemId;
+	}
+	public String getChatTime() {
+		return chatTime;
+	}
+	public void setChatTime(String chatTime) {
+		this.chatTime = chatTime;
+	}
+	public String getChatContents() {
+		return chatContents;
+	}
+	public void setChatContents(String chatContents) {
+		this.chatContents = chatContents;
+	}
+	public String getUpdateDt() {
+		return updateDt;
+	}
+	public void setUpdateDt(String updateDt) {
+		this.updateDt = updateDt;
+	}
+	public String getLastMessage() {
+		return lastMessage;
+	}
+	public void setLastMessage(String lastMessage) {
+		this.lastMessage = lastMessage;
+	}
+	@Override
+	public String toString() {
+		return "ChatVO [chatId=" + chatId + ", sellerMemId=" + sellerMemId + ", buyerMemId=" + buyerMemId
+				+ ", chatTime=" + chatTime + ", chatContents=" + chatContents + ", updateDt=" + updateDt
+				+ ", lastMessage=" + lastMessage + "]";
+	}
+	
+	
+    
+}

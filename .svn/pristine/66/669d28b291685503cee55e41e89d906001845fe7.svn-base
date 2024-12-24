@@ -1,0 +1,5 @@
+package com.future.blue.sell.dao;
+
+public interface ISellDAO {
+
+}

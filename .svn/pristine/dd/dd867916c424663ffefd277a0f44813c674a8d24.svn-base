@@ -1,0 +1,17 @@
+package com.future.blue.purchase.vo;
+
+
+import lombok.Data;
+
+@Data
+public class ChatVO {
+	   
+	private String chatContId;    
+    private String chatContents;    
+    private String chatId;       
+    private String chatTime;       
+    private String chatImageName;    
+    private String chatImagePath;            
+	
+    
+}

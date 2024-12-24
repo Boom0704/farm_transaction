@@ -1,0 +1,5 @@
+package com.future.blue.market.web;
+
+public class MarketController {
+
+}

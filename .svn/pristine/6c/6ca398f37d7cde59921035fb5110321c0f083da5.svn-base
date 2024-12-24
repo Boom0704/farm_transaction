@@ -1,0 +1,5 @@
+package com.future.blue.tips;
+
+public interface ITipsDAO {
+
+}

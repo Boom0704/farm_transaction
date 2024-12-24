@@ -1,0 +1,76 @@
+package com.future.blue.sell.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.future.blue.sell.service.SellService;
+import com.future.blue.sell.vo.SellVO;
+
+@Controller
+public class SellController {
+	
+	@Autowired
+    private SellService sellService;
+	
+	@GetMapping("/sell/main")
+	public String sellView() {
+		
+		return "sell/main";
+	}
+	
+	/**
+	 * 판매 등록 요청을 처리하는 컨트롤러 메서드입니다.
+	 * 판매 정보와 업로드된 사진 파일을 처리하여 데이터베이스에 저장합니다.
+	 * @param sellVO 판매 정보를 담은 객체 (폼 입력값 매핑)
+	 * @param photos 업로드된 사진 파일 배열
+	 * @param redirectAttributes 리다이렉트 시 성공/오류 메시지를 전달하기 위한 객체
+	 * @return 리다이렉트 URL
+	 */
+	@PostMapping("/sell/register")
+	public String registerSell(	@ModelAttribute SellVO sellVO, // 폼의 텍스트 입력값을 매핑
+						        @RequestParam("imageUpload") MultipartFile[] photos, // 다중 파일 업로드 처리
+						        RedirectAttributes redirectAttributes) {
+
+	    // 1. 회원 ID 설정 (로그인된 사용자 정보가 있다고 가정)
+	    sellVO.setMemId("jun"); // 실제 구현에서는 세션에서 가져오도록 수정 필요
+	    sellVO.setSellRegion("대전광역시 서구 둔산동 1221번지");
+	    System.out.println("sdfsdfsdfsdfsdfsdf");
+	    System.out.println(photos);
+	    try {
+	        // 2. 판매 정보와 사진 파일 저장
+	        // 서비스 계층에서 판매 정보와 사진 데이터를 처리 및 저장
+	        sellService.registerSellWithPhotos(sellVO, photos);
+
+	        // 3. 성공 메시지 설정
+	        // 판매 등록 성공 메시지를 리다이렉트 시 함께 전달
+	        redirectAttributes.addFlashAttribute("message", "판매 등록이 완료되었습니다!");
+	        return "redirect:/"; // 메인 페이지로 리다이렉트
+
+	    } catch (Exception e) {
+	        // 4. 오류 처리
+	        e.printStackTrace(); // 예외 로그 출력
+	        // 판매 등록 실패 메시지를 리다이렉트 시 함께 전달
+	        redirectAttributes.addFlashAttribute("error", "판매 등록 중 오류가 발생했습니다.");
+	        return "redirect:/sell/main"; // 등록 페이지로 리다이렉트
+	    }
+	}
+	
+	
+	@GetMapping("/products/detail")
+	public String productDetail(@RequestParam("sellId") int sellId, Model model) {
+	    // sellId를 기반으로 데이터 조회
+	    
+		
+	    // 상세 페이지로 이동
+	    return "purchase/detail";
+	}
+	
+	
+}

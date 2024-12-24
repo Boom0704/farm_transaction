@@ -1,0 +1,127 @@
+<%
+  /* ================================================================= 
+   * 작성일     : 2024. 12. 6. 
+   * 작성자     : 
+   * 상세설명  : 
+   * 화면ID  : 화면 템플릿  큰틀을 div의 class를 container 로 감싸고 하면 모바일까지 크기 조절 가능
+   * ================================================================= 
+   * 수정일         작성자             내용      
+   * ----------------------------------------------------------------------- 
+   * ================================================================= 
+   */
+%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>템플릿~</title>
+</head>
+<body>
+<!--
+부트스트랩 개요:
+
+1. 그리드 시스템 (Grid System)
+ - .container: 고정된 폭의 반응형 컨테이너.
+ - .container-fluid: 페이지 전체 폭을 사용하는 컨테이너.
+ - .row: 그리드 행을 정의하는 데 사용.
+ - .col: 열을 정의하는 데 사용. 화면 크기에 따라 자동으로 크기 조정됨.
+ - .col-{breakpoint}-{size}: 특정 크기에서 열의 크기 지정. 예: col-md-6은 중간 화면 크기(md)에서 열이 12개의 그리드 중 6개의 공간 차지.
+
+   참고: 모바일 앱과 웹에서 모두 사용 가능하게 할 때 그리드 시스템을 사용하여 반응형 디자인을 구현해야 합니다. 예를 들어, 작은 화면에서는 열을 세로로 배치하고, 큰 화면에서는 가로로 배치하도록 `.col-sm`, `.col-md`, `.col-lg` 등의 클래스를 사용해 보세요.
+
+2. 타이포그래피 (Typography)
+ - .h1, .h2, ..., .h6: HTML 헤더 태그처럼 텍스트 크기 지정.
+ - .lead: 큰 크기의 강조 텍스트.
+ - .text-{color}: 텍스트 색상 지정. 예: text-primary, text-success, text-danger.
+ - .text-center, .text-right, .text-left: 텍스트 정렬 지정.
+
+   참고: 모바일과 웹 둘 다 대응하기 위해 폰트 크기를 적절히 조절하세요. `rem` 또는 `em` 단위를 사용하면 화면 크기에 맞춰 글씨 크기가 유동적으로 변경될 수 있습니다. 특히, 모바일에서는 큰 글씨를 줄여서 가독성을 높이는 것이 중요합니다. 또한, custom.css에서 정의한 색상을 활용하여 텍스트 색상을 일관되게 적용하세요. 예: `var(--text-color)`.
+
+3. 색상 유틸리티 클래스 (Color Utility Classes)
+ - .bg-{color}: 배경 색상 지정. 예: bg-primary, bg-success.
+ - .text-{color}: 텍스트 색상 지정. 예: text-warning, text-muted.
+
+   참고: custom.css에서 정의한 공통 색상 변수 (`--primary-color`, `--secondary-color` 등)를 사용하여 배경과 텍스트 색상을 일관되게 적용하세요. 이를 통해 유지보수가 쉬워지고, 디자인 일관성을 유지할 수 있습니다.
+
+4. 버튼 (Buttons)
+ - .btn: 기본 버튼 스타일.
+ - .btn-{color}: 버튼 색상 지정. 예: btn-primary, btn-secondary, btn-danger.
+ - .btn-outline-{color}: 테두리만 색상으로 표시되는 버튼. 예: btn-outline-primary.
+ - .btn-lg, .btn-sm: 버튼 크기 조절.
+
+   참고: 버튼 크기를 모바일과 웹 환경에 맞춰 조정하세요. 모바일에서는 버튼이 더 크고 쉽게 누를 수 있도록 `.btn-lg`를 사용하고, 데스크탑에서는 `.btn-sm`으로 조정할 수 있습니다. 또한, 버튼 색상은 custom.css에서 정의한 `--primary-color`와 같은 변수를 사용해 통일성을 유지하세요.
+
+5. 카드 (Cards)
+ - .card: 카드 컨테이너.
+ - .card-body: 카드 본문 부분.
+ - .card-title, .card-text: 카드 안의 제목과 본문 텍스트.
+ - .card-img-top, .card-img-bottom: 카드 이미지 영역.
+
+   참고: 카드 요소는 모바일 화면에서 너무 작거나 크지 않도록 적절한 여백과 크기를 설정하세요. `.card`와 함께 `.mb-3` 같은 여백 클래스를 활용해 간격을 조정하면 좋습니다. 또한 카드의 배경색이나 텍스트 색상에 custom.css의 변수를 사용해 일관성을 유지하세요.
+
+6. 폼 (Forms)
+ - .form-control: 텍스트 입력 필드와 같은 폼 요소에 적용하여 기본 스타일 제공.
+ - .form-group: 폼 요소 그룹을 묶기 위한 컨테이너.
+ - .form-check: 체크박스나 라디오 버튼을 위한 스타일링.
+
+   참고: 폼 입력 필드는 모바일에서 쉽게 입력할 수 있도록 충분한 높이와 여백을 확보하세요. `.form-control` 클래스에 `padding` 값을 조정하여 모바일에서도 편리한 사용자 경험을 제공합니다. 폼 요소의 배경색이나 텍스트 색상에도 custom.css의 색상 변수를 사용할 수 있습니다.
+
+7. 네비게이션 바 (Navbar)
+ - .navbar: 네비게이션 바의 기본 컨테이너.
+ - .navbar-brand: 사이트의 로고나 이름에 사용.
+ - .navbar-toggler: 모바일 뷰에서 네비게이션 메뉴를 토글하는 버튼.
+ - .navbar-collapse: 반응형으로 처리되는 네비게이션 메뉴 포함 부분.
+
+   참고: 모바일 환경에서는 `.navbar-toggler` 버튼을 통해 메뉴를 숨기고 필요할 때 표시하도록 하여 화면 공간을 절약할 수 있습니다. 웹과 모바일에서 네비게이션 메뉴의 가시성을 고려해 디자인하세요. 네비게이션 바의 배경색에도 custom.css의 `--primary-color` 또는 `--secondary-color`를 사용하여 일관성을 유지하세요.
+
+8. 모달 (Modal)
+ - .modal: 모달 창의 기본 컨테이너.
+ - .modal-dialog: 모달 대화 상자.
+ - .modal-content: 모달 콘텐츠 부분.
+ - .modal-header, .modal-body, .modal-footer: 모달의 헤더, 본문, 푸터.
+
+   참고: 모달의 배경이나 텍스트 색상도 custom.css의 변수를 사용해 통일된 스타일을 유지하세요.
+
+9. 배지 (Badges)
+ - .badge: 배지 생성 기본 클래스.
+ - .badge-{color}: 배지 색상 지정. 예: badge-primary, badge-warning.
+
+10. 반응형 유틸리티 클래스
+ - .d-{breakpoint}-none: 특정 크기에서 요소 숨김. 예: d-md-none.
+ - .d-{breakpoint}-block: 특정 크기에서 요소 표시. 예: d-lg-block.
+
+   참고: 반응형 디자인을 위해 특정 화면 크기에서 요소를 숨기거나 표시할 때 유용합니다. 모바일에서 불필요한 요소를 숨기고 중요한 정보만 표시하는 것이 좋습니다.
+
+11. 스피너 (Spinner)
+ - .spinner-border: 원형 스피너.
+ - .spinner-grow: 점점 커지는 스타일의 스피너.
+
+   참고: 로딩 상태를 표시할 때 모바일과 웹 둘 다 보기 좋도록 적절한 크기를 설정하세요. 작은 화면에서는 스피너 크기를 줄이는 것이 좋습니다.
+
+12. 알림 (Alerts)
+ - .alert: 알림 메시지의 기본 클래스.
+ - .alert-{color}: 알림 메시지 색상 지정. 예: alert-success, alert-danger.
+
+   참고: 알림 메시지의 색상도 custom.css에 정의된 색상 변수를 사용해 일관성을 유지하세요.
+
+부트스트랩은 드롭다운(dropdowns), 툴팁(tooltips), 토글(toggles) 등 다양한 유용한 컴포넌트를 제공하여 반응형 웹 디자인을 쉽게 구현할 수 있게 돕습니다. 각 클래스는 화면을 빠르게 디자인하고 반응형 웹을 쉽게 구현할 수 있도록 설계되었습니다.
+특히 모바일과 웹 환경을 모두 고려하여 디자인 요소를 최적화하는 것이 중요합니다.
+-->
+
+<jsp:include page="/WEB-INF/inc/header.jsp"></jsp:include> 
+
+<div class="container">
+
+    <p>이곳에 원하는 내용을 넣으세요.</p>
+    
+</div>
+
+<jsp:include page="/WEB-INF/inc/footer.jsp"></jsp:include>
+
+</body>
+</html>

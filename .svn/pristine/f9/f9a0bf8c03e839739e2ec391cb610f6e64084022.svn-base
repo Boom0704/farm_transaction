@@ -1,0 +1,5 @@
+package com.future.blue.member.dao;
+
+public interface IMemberDAO {
+
+}

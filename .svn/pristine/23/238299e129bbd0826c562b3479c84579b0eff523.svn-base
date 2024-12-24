@@ -1,0 +1,57 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script defer src="/js/home.js"></script>
+</head>
+<body>
+<jsp:include page="/WEB-INF/inc/header.jsp"></jsp:include>
+    <div class="container">
+        <!-- 검색창 -->
+        <div class="search-section">
+            <input type="text" id="search-input" class="search-input" placeholder="상품을 검색하세요">
+            <button id="search-button" class="search-button"><i class="fas fa-search"></i></button>
+        </div>
+
+        <!-- 카테고리 -->
+		<div class="category-section">
+		    <div class="category-title">
+		        카테고리
+		    </div>
+		    <div class="category-header" id="category-toggle">
+		        <span>카테고리</span>
+		        <i class="fas fa-chevron-down" id="dropdown-icon"></i>
+		    </div>
+		    <div class="category-dropdown" id="category-dropdown">
+		        <label><input type="checkbox" value="all"> 모든 농산물</label>
+		        <label><input type="checkbox" value="carrot"> 당근</label>
+		        <label><input type="checkbox" value="potato"> 감자</label>
+		        <label><input type="checkbox" value="onion"> 양파</label>
+		        <label><input type="checkbox" value="cabbage"> 배추</label>
+		        <label><input type="checkbox" value="spinach"> 시금치</label>
+		        <label><input type="checkbox" value="garlic"> 마늘</label>
+		        <label><input type="checkbox" value="pepper"> 고추</label>
+		        <label><input type="checkbox" value="radish"> 무</label>
+		        <label><input type="checkbox" value="eggplant"> 가지</label>
+		        <label><input type="checkbox" value="tomato"> 토마토</label>
+		    </div>
+		</div>
+
+
+        <!-- 판매 물품 카드 -->
+        <div class="card-section">
+            <c:forEach var="i" begin="1" end="15">
+                <jsp:include page="/WEB-INF/inc/productCard.jsp"></jsp:include>
+            </c:forEach>
+        </div>
+    </div>
+<jsp:include page="/WEB-INF/inc/footer.jsp"></jsp:include>
+</body>
+</html>

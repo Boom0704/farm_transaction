@@ -1,0 +1,33 @@
+package com.future.blue.purchase.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.future.blue.purchase.dao.IChatDAO;
+import com.future.blue.purchase.vo.ChatVO;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class ChatService {
+
+    @Autowired
+    private IChatDAO chatDAO;
+
+    public List<ChatVO> getChatList() {
+        return chatDAO.selectChatList();
+    }
+
+    public void createChatRoom(Map<String, Object> params) {
+        chatDAO.createChatRoom(params);
+    }
+
+    public void insertChatMessage(Map<String, Object> params) {
+        chatDAO.insertChatMessage(params);
+    }
+
+    public void updateChatRoomStatus(Map<String, Object> params) {
+        chatDAO.updateChatRoomStatus(params);
+    }
+}

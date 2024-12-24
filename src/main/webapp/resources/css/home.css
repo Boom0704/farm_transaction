@@ -1,0 +1,171 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+.container {
+    position: relative;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* 검색창 */
+.search-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.search-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+}
+
+/* 카테고리 */
+.category-section {
+    position: absolute;
+    top: 140px;
+    left: -140px;
+    width: 140px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.category-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.category-section .category-header {
+    display: none; /* 모바일에서만 보임 */
+}
+
+.category-section .category-dropdown {
+    display: block;
+    gap: 10px;
+}
+
+.category-dropdown label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.category-dropdown input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* 메인 섹션 */
+.card-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* card-body hover 효과 */
+.product-card {
+    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+    cursor: pointer; /* 마우스 포인터를 손 모양으로 변경 */
+}
+
+.product-card:hover {
+    background-color: #f8f9fa; /* 배경색 변경 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 박스 그림자 추가 */
+    transform: scale(1.02); /* 약간 확대 */
+}
+
+/* 클릭된 상태를 표시하는 active 스타일 */
+.product-card:active {
+    background-color: #e9ecef; /* 클릭 시 배경색 변경 */
+    transform: scale(0.98); /* 약간 축소 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 약간 줄임 */
+}
+
+/* 판매 등록 버튼 고정 스타일 */
+.fixed-sell-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.fixed-sell-button:hover {
+    background-color: #0056b3;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 1500px) {
+    .category-section {
+        position: static; /* 모바일 위치로 이동 */
+        width: 100%;
+        margin-bottom: 20px;
+        top: unset; /* 상단 위치 초기화 */
+        left: unset; /* 좌측 위치 초기화 */
+    }
+
+    .category-section .category-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 10px;
+        font-weight: bold;
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .category-section .category-dropdown, .category-title {
+        display: none;
+    }
+
+    .category-section .category-dropdown.show {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .card-section {
+        margin-left: 0; /* 모바일에서 카테고리 영향 제거 */
+    }
+}

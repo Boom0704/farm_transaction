@@ -1,0 +1,98 @@
+package com.future.blue.sell.vo;
+
+public class SellVO {
+	
+	private int sellId;
+	private String sellTitle;
+	private String sellContents;
+	private String memId;
+	private int sellPrice;
+	private String sellYn;
+	private String reservedYn;
+	private String createDt;
+	private String updateDt;
+	private String sellRegion;
+	private String imagePath;
+	private String sellCategory;
+	public int getSellId() {
+		return sellId;
+	}
+	public String getSellCategory() {
+		return sellCategory;
+	}
+	public void setSellCategory(String sellCategory) {
+		this.sellCategory = sellCategory;
+	}
+	public void setSellId(int sellId) {
+		this.sellId = sellId;
+	}
+	public String getSellTitle() {
+		return sellTitle;
+	}
+	public void setSellTitle(String sellTitle) {
+		this.sellTitle = sellTitle;
+	}
+	public String getSellContents() {
+		return sellContents;
+	}
+	public void setSellContents(String sellContents) {
+		this.sellContents = sellContents;
+	}
+	public String getMemId() {
+		return memId;
+	}
+	public void setMemId(String memId) {
+		this.memId = memId;
+	}
+	public int getSellPrice() {
+		return sellPrice;
+	}
+	public void setSellPrice(int sellPrice) {
+		this.sellPrice = sellPrice;
+	}
+	public String getSellYn() {
+		return sellYn;
+	}
+	public void setSellYn(String sellYn) {
+		this.sellYn = sellYn;
+	}
+	public String getReservedYn() {
+		return reservedYn;
+	}
+	public void setReservedYn(String reservedYn) {
+		this.reservedYn = reservedYn;
+	}
+	public String getCreateDt() {
+		return createDt;
+	}
+	public void setCreateDt(String createDt) {
+		this.createDt = createDt;
+	}
+	public String getUpdateDt() {
+		return updateDt;
+	}
+	public void setUpdateDt(String updateDt) {
+		this.updateDt = updateDt;
+	}
+	public String getSellRegion() {
+		return sellRegion;
+	}
+	public void setSellRegion(String sellRegion) {
+		this.sellRegion = sellRegion;
+	}
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	@Override
+	public String toString() {
+		return "SellVO [sellId=" + sellId + ", sellTitle=" + sellTitle + ", sellContents=" + sellContents + ", memId="
+				+ memId + ", sellPrice=" + sellPrice + ", sellYn=" + sellYn + ", reservedYn=" + reservedYn
+				+ ", createDt=" + createDt + ", updateDt=" + updateDt + ", sellRegion=" + sellRegion + ", imagePath="
+				+ imagePath + ", sellCategory=" + sellCategory + "]";
+	}
+
+	
+}

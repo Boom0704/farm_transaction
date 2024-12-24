@@ -1,0 +1,13 @@
+package com.future.blue.market.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class MarketController {
+	
+	@GetMapping("/market/main_kmh")
+	public String marketView() {
+		return "market/main_kmh";
+	}
+}

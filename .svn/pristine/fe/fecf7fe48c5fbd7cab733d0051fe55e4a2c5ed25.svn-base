@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.blue.purchase.dao.IChatDAO">
+
+    <!-- 채팅방 리스트 조회 -->
+    <select id="getRoomList"
+        resultType="com.future.blue.purchase.vo.RoomVO">
+        SELECT CHAT_ID, CHAT_SELLER, CHAT_BUYER, CHAT_PROD_ID, CHAT_STATUS, CREATE_DT, UPDATE_DT
+        FROM CHAT
+        ORDER BY UPDATE_DT DESC
+    </select>
+
+    <!-- 채팅방 생성 -->
+    <insert id="createRoom"
+        parameterType="com.future.blue.purchase.vo.RoomVO">
+        <selectKey keyProperty="chatId" resultType="String"
+            order="BEFORE">
+            SELECT SEQ_CHAT_NO.NEXTVAL FROM dual
+        </selectKey>
+        INSERT INTO CHAT(CHAT_ID, CHAT_SELLER, CHAT_BUYER, CHAT_PROD_ID, CHAT_STATUS, CREATE_DT)
+        VALUES (#{chatId}, #{chatSeller}, #{chatBuyer}, #{chatProdId}, 'A', SYSDATE)           <!--  수정함 -->
+    </insert>
+
+    <!-- 대화 기록 조회 -->
+    <select id="getChatList"
+        resultType="com.future.blue.purchase.vo.ChatVO">
+        SELECT TM_ID, TM_CHAT_ID, TM_SENDER, TM_CONTENT, TM_STATUS, TM_DATE, TM_MEET_DATE, TM_MEET_PLACE, TM_PRICE, TM_CONTENT_TYPE, TM_IMG_NAME
+              
+        FROM TRADEMSG
+        WHERE TM_CHAT_ID = #{tmChatId}
+        ORDER BY TM_DATE ASC
+    </select>
+
+    <!-- 대화 저장 (텍스트 메시지) -->
+    <insert id="insertChat"
+        parameterType="com.future.blue.purchase.vo.ChatVO">
+        INSERT INTO TRADEMSG (TM_ID, TM_CHAT_ID, TM_SENDER, TM_CONTENT, TM_CONTENT_TYPE, TM_STATUS, TM_DATE)
+        VALUES (SEQ_TM.NEXTVAL, #{tmChatId}, #{tmSender}, #{tmContent},#{tmContentType}, 'N', TO_DATE(#{tmDate},'YYYY-MM-DD HH24:MI:SS'))
+    </insert>
+
+    <!-- 기존 채팅방 조회 -->
+    <select id="findChatRoom"
+        parameterType="com.future.blue.purchase.vo.RoomVO" resultType="String">
+        SELECT CHAT_ID
+        FROM CHAT
+        WHERE CHAT_SELLER = #{chatSeller}
+        AND CHAT_BUYER = #{chatBuyer}
+        AND CHAT_PROD_ID = #{chatProdId}
+    </select>
+
+    <!-- 새로운 채팅방 생성 -->
+    <insert id="createChatRoom"
+        parameterType="com.future.blue.purchase.vo.RoomVO">
+        INSERT INTO CHAT (CHAT_ID, CHAT_SELLER, CHAT_BUYER, CHAT_PROD_ID, CHAT_STATUS, CREATE_DT)
+        VALUES (#{chatId}, #{chatSeller}, #{chatBuyer}, #{chatProdId}, 'A', SYSDATE)
+    </insert>
+
+    <!-- 채팅방 정보 조회 (채팅방과 관련된 모든 정보 포함) -->
+    <select id="getRoomDetails" parameterType="String"
+        resultType="com.future.blue.purchase.vo.RoomVO">
+        SELECT a.chat_id, a.chat_prod_id, a.chat_seller, a.chat_buyer, a.chat_status, b.PROD_NAME, b.PROD_content, b.PROD_price, b.PROD_PLACE
+        FROM CHAT a
+        JOIN PRODUCTS b ON a.chat_prod_id = b.PROD_id
+        WHERE a.chat_id = #{chatId}
+    </select>
+
+
+</mapper>

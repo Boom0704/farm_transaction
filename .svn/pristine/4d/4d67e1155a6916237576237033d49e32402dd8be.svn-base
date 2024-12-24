@@ -1,0 +1,14 @@
+package com.future.blue.priceInfo;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class PriceInfo_kmh {
+	
+	@RequestMapping("/priceInfo")
+	public String priceInfo() {
+		return "product/priceInfo";
+	}
+
+}

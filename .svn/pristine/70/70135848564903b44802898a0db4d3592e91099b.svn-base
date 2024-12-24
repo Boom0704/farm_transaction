@@ -1,0 +1,51 @@
+package com.future.blue.purchase.web;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.future.blue.purchase.service.ChatService;
+import com.future.blue.purchase.vo.ChatVO;
+import com.future.blue.purchase.vo.RoomVO;
+
+@Controller
+public class ChatController {
+
+    @Autowired
+    private ChatService chatService;
+
+    @RequestMapping("/chat")
+    public String chatView(Model model, @RequestParam(required = false) Integer chatId) {
+        // chatId가 null일 경우를 처리할 수 있습니다
+        System.out.println(chatId);
+        if (chatId != null) {
+            ArrayList<ChatVO> chatList = chatService.getChatList(chatId);
+            model.addAttribute("chatId", chatId);
+            model.addAttribute("chatList", chatList);
+        } else {
+            // chatId가 null일 때 처리할 로직
+        }
+        return "chattest1/chat";
+    }
+
+    //채팅 메세지 전달
+    @MessageMapping("/hello/{chatId}")
+    @SendTo("/subscribe/chat/{chatId}")
+    public ChatVO broadcasting(ChatVO chatVO) {
+        // chatlog 기록        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        chatVO.setChatTime(sdf.format(new Date()));
+        chatService.insertChat(chatVO);
+
+        return chatVO;
+    }
+}

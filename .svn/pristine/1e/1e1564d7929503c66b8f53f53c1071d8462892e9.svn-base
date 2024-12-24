@@ -1,0 +1,21 @@
+package com.future.blue.sell.vo;
+
+import java.util.List;
+
+import lombok.Data;
+
+@Data
+public class SellVO {
+	
+	private int sellId;
+	private String sellTitle;
+	private String sellContents;
+	private String memId;
+	private int prodCategoryId;
+	private int sellPrice;
+	private String sellYn;
+	private String reservedYn;
+	private String createDt;
+	private String updateDt;
+	private String sellRegion;
+}

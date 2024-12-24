@@ -1,0 +1,24 @@
+package com.future.blue.board.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.future.blue.board.dao.BoardDAO;
+import com.future.blue.board.vo.BoardVO;
+
+@Service
+public class BoardService {
+	
+	@Autowired
+	BoardDAO dao;
+	
+	public List<BoardVO> getBoardList() {
+		// TODO Auto-generated method stub
+		
+		List<BoardVO> result = dao.getBoardList();
+		
+		return result;
+	}
+}

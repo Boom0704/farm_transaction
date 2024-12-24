@@ -1,0 +1,145 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 물건 팔기</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sell_main.css">
+</head>
+
+<body>
+<div class="container">
+    <form id="itemForm" enctype="multipart/form-data" action="register" method="post">
+        <h4>내 물건 팔기</h4>
+
+        <!-- 이미지 업로드 -->
+        <div class="mb-3">
+            <label for="imageUpload">사진 (최대 10개)</label>
+            <div class="image-upload">
+                <label for="imageUpload">
+                    <span>+</span>
+                    <small>이미지 추가</small>
+                    <input type="file" id="imageUpload" name="imageUpload" style="display: none;" multiple accept="image/*">
+                </label>
+                <div id="imagePreview"></div>
+            </div>
+            <small id="imageCount">0/10</small>
+        </div>
+
+        <!-- 자동완성 여부 -->
+        <div class="mb-3">
+            <label for="autoCompleteSwitch" class="form-label">자동완성</label>
+            <div class="switch-wrapper">
+                <input type="checkbox" id="autoCompleteSwitch" class="toggle-switch">
+                <label for="autoCompleteSwitch" class="switch-label"></label>
+            </div>
+        </div>
+
+        <!-- 제목 -->
+        <div class="mb-3">
+            <label for="sellTitle">제목</label>
+            <input type="text" id="sellTitle" name="sellTitle" placeholder="제목을 입력해주세요">
+        </div>
+
+        <!-- 거래 방식 -->
+        <div class="mb-3">
+            <label>거래 방식</label>
+            <div class="radio-button-group">
+                <div class="form-check">
+                    <input type="radio" id="sellOption" name="tradeOption" value="판매하기" checked>
+                    <label for="sellOption">판매하기</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="giveOption" name="tradeOption" value="나눠주기">
+                    <label for="giveOption">나눠주기</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 가격 -->
+        <div class="mb-3">
+            <label for="price">가격</label>
+            <input type="number" id="price" name="sellPrice" placeholder="가격을 입력해주세요" required>
+        </div>
+
+        <!-- 상세 설명 -->
+        <div class="mb-3">
+            <label for="description">자세한 설명</label>
+            <textarea id="description" name="sellContents" rows="5" placeholder="내용을 입력해주세요"></textarea>
+        </div>
+
+        <!-- 거래 희망 장소 -->
+        <div class="mb-3">
+            <label for="fullAddr">거래 희망 장소</label>
+            <input type="text" id="fullAddr" name="sellRegion" placeholder="주소를 입력해주세요" readonly>
+        </div>
+
+        <!-- 작성하기 버튼 -->
+        <div>
+            <button type="submit">작성하기</button>
+        </div>
+    </form>
+</div>
+
+</body>
+
+<script>
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageCount = document.getElementById('imageCount');
+    let selectedFiles = [];
+
+    imageUpload.addEventListener('change', function () {
+        const files = Array.from(imageUpload.files);
+
+        if (selectedFiles.length + files.length > 10) {
+            alert('최대 10개의 이미지만 업로드 가능합니다.');
+            // 파일 개수를 넘어서는 경우 선택되지 않도록 설정
+            return;
+        }
+
+        selectedFiles = selectedFiles.concat(files);
+        renderImagePreview();
+    });
+
+    function renderImagePreview() {
+        imagePreview.innerHTML = '';
+        for (let i = 0; i < selectedFiles.length; i++) {
+            const file = selectedFiles[i];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const container = document.createElement('div');
+                container.classList.add('image-container');
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+
+                const removeBtn = document.createElement('span');
+                removeBtn.classList.add('remove-image');
+                removeBtn.textContent = 'X';
+                removeBtn.addEventListener('click', () => removeImage(i));
+
+                container.appendChild(img);
+                container.appendChild(removeBtn);
+                imagePreview.appendChild(container);
+            };
+            reader.readAsDataURL(file);
+        }
+        imageCount.textContent = selectedFiles.length + '/10';
+    }
+
+    function removeImage(index) {
+        selectedFiles.splice(index, 1);
+        renderImagePreview();
+    }
+
+    // **중요**: 기존의 submit 이벤트 가로채기 및 AJAX 요청 코드 제거
+    // 이렇게 하면 폼이 전통적인 방식으로 서버에 제출되고,
+    // 서버에서 redirect 응답 시 브라우저가 자동으로 해당 페이지로 이동합니다.
+
+</script>
+</html>

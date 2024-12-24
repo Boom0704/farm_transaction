@@ -1,0 +1,24 @@
+package com.future.blue.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+
+import com.future.blue.handler.ChatWebSocketHandler;
+
+@Configuration // Spring 설정 클래스임을 명시
+@EnableWebSocket // WebSocket 기능을 활성화
+public class WebSocketConfig implements WebSocketConfigurer{
+
+	 /**
+     * WebSocket 핸들러를 등록하는 메소드입니다.
+     * @param registry WebSocket 핸들러를 등록하는 레지스트리 객체
+     */
+	@Override
+	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+		// WebSocket 핸들러를 "/chat" 경로에 등록하고 모든 출처를 허용
+        registry.addHandler(new ChatWebSocketHandler(), "/chat").setAllowedOrigins("*");
+		
+	}
+}

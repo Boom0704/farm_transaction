@@ -1,0 +1,46 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product View</title>
+    <link rel="stylesheet" href="/css/productView.css">
+    <script defer src="/js/productView.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 카테고리 -->
+        <div class="category-section">
+            <select id="category-dropdown" class="category-dropdown">
+                <option value="all">모든 농산물</option>
+                <option value="carrot">당근</option>
+                <option value="potato">감자</option>
+                <option value="onion">양파</option>
+                <option value="cabbage">배추</option>
+                <option value="spinach">시금치</option>
+                <option value="garlic">마늘</option>
+                <option value="pepper">고추</option>
+                <option value="radish">무</option>
+                <option value="eggplant">가지</option>
+                <option value="tomato">토마토</option>
+            </select>
+        </div>
+
+        <!-- 검색창 -->
+        <div class="search-section">
+            <input type="text" id="search-input" class="search-input" placeholder="상품을 검색하세요">
+            <button id="search-button" class="search-button">&#128269;</button>
+        </div>
+
+        <!-- 판매 물품 카드 -->
+        <div class="card-section">
+            <c:forEach var="i" begin="1" end="15">
+				<jsp:include page="/WEB-INF/inc/productCard.jsp"></jsp:include>
+            </c:forEach>
+        </div>
+    </div>
+</body>
+</html>

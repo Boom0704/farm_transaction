@@ -1,0 +1,210 @@
+:root {
+    --primary-color: #007bff; /* 주요 색상 */
+    --secondary-color: #6c757d; /* 보조 색상 */
+    --background-color: #f8f9fa; /* 배경 색상 */
+    --text-color: #333; /* 기본 텍스트 색상 */
+    --light-color: #ffffff; /* 밝은 색상 */
+}
+
+/* 공통 헤더 스타일 */
+.nav-custom {
+    height: 70px; /* 헤더 높이 */
+    padding: 0 20px; /* 좌우 여백 */
+    background-color: var(--background-color); /* 배경색 */
+    position: fixed; /* 상단 고정 */
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* 다른 요소 위에 표시 */
+    display: flex; /* 플렉스 레이아웃 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: space-between; /* 로고와 메뉴를 양 끝에 배치 */
+}
+
+/* 로고 스타일 */
+.navbar-brand {
+    display: flex;
+    align-items: center; /* 로고 이미지와 텍스트 정렬 */
+    font-size: 1.6rem; /* 로고 텍스트 크기 */
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.navbar-brand img {
+    margin-right: 10px; /* 로고 이미지와 텍스트 간격 */
+}
+
+/* 메뉴 스타일 */
+.navbar-collapse {
+    display: flex;
+    justify-content: flex-end; /* 메뉴를 오른쪽 정렬 */
+    padding-right: 20px; /* 오른쪽 여유 공간 추가 */
+}
+
+.navbar-nav {
+    display: flex;
+    flex-direction: row; /* 웹에서 가로 정렬 */
+    align-items: center;
+}
+
+.nav-item {
+    margin-left: 10px; /* 메뉴 간 간격 */
+}
+
+.nav-link {
+    color: var(--primary-color);
+    font-size: 1rem;
+    text-decoration: none; /* 밑줄 제거 */
+    margin: 0 5px; /* 메뉴 여백 */
+}
+
+.nav-link:hover {
+    color: var(--secondary-color); /* 호버 시 색상 변경 */
+}
+
+/* 토글 버튼 스타일 */
+.navbar-toggler {
+    position: absolute;
+    right: 20px; /* 오른쪽 끝에 위치 */
+    top: 50%; /* 세로 중앙 정렬 */
+    transform: translateY(-50%);
+    border-color: transparent; /* 테두리 제거 */
+}
+
+/* 모바일 전용 Offcanvas */
+.offcanvas-custom {
+    background-color: var(--background-color); /* 배경색 */
+    color: var(--text-color); /* 텍스트 색상 */
+    width: 70%; /* Offcanvas 메뉴 너비 */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.offcanvas-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* 메뉴 헤더 구분선 */
+}
+
+.offcanvas-body {
+    padding: 15px; /* 내부 여백 */
+}
+
+.offcanvas-body .navbar-nav {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+    gap: 15px; /* 메뉴 간 간격 추가 */
+}
+
+.offcanvas-body .nav-item {
+    width: 100%; /* 메뉴 아이템을 전체 너비로 */
+}
+
+.offcanvas-body .nav-link {
+    font-size: 1rem;
+    margin: 0; /* 메뉴 내부 여백 제거 */
+    width: 100%; /* 메뉴 링크를 전체 너비로 */
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .navbar-collapse {
+        display: none; /* 모바일에서 웹 메뉴 숨기기 */
+    }
+
+    .navbar-toggler {
+        margin-right: 15px; /* 오른쪽 정렬 */
+    }
+
+    .offcanvas-custom {
+        width: 70%; /* 모바일 화면에서는 오른쪽 슬라이드 메뉴 */
+    }
+}
+
+
+
+/* 공통 바디 스타일 */
+body {
+    font-family: 'Roboto', sans-serif; /* 기본 폰트 */
+    background-color: var(--background-color); /* 배경색 */
+    padding-top: 80px; /* 헤더 높이에 맞춘 여백 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 60px; /* 푸터 높이만큼 하단 여백 추가 */
+}
+
+/* 컨텐츠 영역 */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+    flex: 1;
+}
+
+/* 웹 전용 푸터 */
+.footer {
+    background-color: var(--background-color);
+    padding: 20px 0;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    width: 100%;
+    display: block; /* 기본값: 보이기 */
+}
+
+/* 모바일 전용 푸터 */
+.mobile-footer {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    display: none; /* 기본값: 숨김 */
+    height: 60px; /* 푸터 높이 */
+}
+
+/* 아이콘 배치 */
+.icon-row {
+    display: flex;
+    justify-content: space-around; /* 아이콘 간 균일한 간격 */
+    align-items: center; /* 세로 중앙 정렬 */
+    height: 50px; /* 아이콘 영역 높이 */
+}
+
+/* 링크 스타일 */
+.footer-icon-link {
+    text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+/* 아이콘 스타일 */
+.footer-icon-placeholder {
+    color: var(--light-color); /* 아이콘 기본 색상 */
+    font-size: 1.5rem; /* 아이콘 크기 */
+    text-align: center; /* 가운데 정렬 */
+    display: inline-block;
+    transition: color 0.2s ease; /* 색상 변경 애니메이션 */
+}
+
+/* 호버 스타일 */
+.footer-icon-link:hover .footer-icon-placeholder {
+    color: var(--secondary-color); /* 호버 시 색상 변경 */
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .footer {
+        display: none; /* 웹 푸터 숨기기 */
+    }
+
+    .mobile-footer {
+        display: block; /* 모바일 푸터 활성화 */
+    }
+    
+    body {
+        padding-bottom: 50px; /* 모바일 푸터 높이만큼 여백 추가 */
+    }
+}

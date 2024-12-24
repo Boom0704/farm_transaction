@@ -1,0 +1,5 @@
+package com.future.blue.board.dao;
+
+public interface IBoardDAO {
+
+}

@@ -1,0 +1,5 @@
+package com.future.blue.board.web;
+
+public class BoardController {
+
+}

@@ -1,0 +1,14 @@
+package com.future.blue.board.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.future.blue.board.vo.BoardVO;
+
+@Mapper
+public interface BoardDAO {
+
+	List<BoardVO> getBoardList();
+
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.blue.market.dao.IMarketDAO">
+	
+	<select id="selectCode" resultType="MarketVO" >
+	
+	 SELECT pdlt_ctg_code, pdlt_ctg_nm
+	 FROM daily_product_prices2
+	 WHERE pdlt_ctg_code IN ('100', '200', '300', '400')
+	   AND exmn_se_nm = '도매'
+	 GROUP BY pdlt_ctg_code, pdlt_ctg_nm
+	 ORDER BY pdlt_ctg_code
+
+	</select>
+	
+</mapper>

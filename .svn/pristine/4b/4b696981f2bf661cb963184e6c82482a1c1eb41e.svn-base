@@ -1,0 +1,24 @@
+package com.future.blue.purchase.vo;
+
+import lombok.Data;
+
+@Data
+public class RoomVO {
+	
+    private String chatId;         
+    private String sellerMemId;      
+    private String buyerMemId;   
+    private String sellerStatus;   
+    private String buyerStatus;      
+    private String prodId;          
+    private String promiseDate;      
+    private String promiseTime;     
+    private String promiseLocation;  
+    private String promiseStatus;   
+    private String alertTime;         
+    private String createDt;          
+    private String updateDt;    
+    private int createChatRoom;
+	
+    
+}

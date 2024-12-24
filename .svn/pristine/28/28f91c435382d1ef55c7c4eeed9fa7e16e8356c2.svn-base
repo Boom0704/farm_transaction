@@ -1,0 +1,24 @@
+package com.future.blue.sell.dao;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.future.blue.sell.vo.PhotoVO;
+import com.future.blue.sell.vo.SellVO;
+
+@Mapper
+public interface ISellDAO {
+
+	/**
+	 * 판매 정보를 PRODUCTS_SELL 테이블에 저장합니다.
+	 * @param sellVO 판매 정보 (판매 제목, 내용, 가격, 회원 ID, 거래 희망 장소 등 포함)
+	 * @return 성공적으로 삽입된 행의 수
+	 */
+	public int insertSellInfo(SellVO sellVO);
+
+	/**
+	 * 사진 정보를 PRODUCT_PHOTOS 테이블에 저장합니다.
+	 * @param photoVO 사진 정보 (사진 경로, 이름, 관련 제품 ID 등 포함)
+	 * @return 성공적으로 삽입된 행의 수
+	 */
+	public int insertPhoto(PhotoVO photoVO);
+}

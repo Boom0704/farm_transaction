@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.blue.purchase.dao.IChatDAO">
+
+    <!-- 채팅방 목록 조회 -->
+    <select id="selectChatList" resultType="com.future.blue.purchase.vo.ChatVO">
+        SELECT 
+            a.SELLER_MEM_ID,
+            TO_CHAR(a.UPDATE_DT, 'YYYY-MM-DD HH24:MI:SS') AS UPDATE_DT,
+            -- 채팅방별 마지막 메시지 내용
+            (SELECT b.CHAT_CONTENTS
+             FROM CHAT_CONTENTS b
+             WHERE b.CHAT_ID = a.CHAT_ID
+             ORDER BY b.CHAT_TIME DESC
+             FETCH FIRST 1 ROWS ONLY) AS LAST_MESSAGE
+        FROM 
+            CHATROOM a
+        ORDER BY 
+            a.UPDATE_DT DESC
+    </select>
+
+    <!-- 채팅방 생성 -->
+    <insert id="createChatRoom" parameterType="map">
+        INSERT INTO CHATROOM (
+            CHAT_ID, SELLER_MEM_ID, BUYER_MEM_ID, PROD_ID, CREATE_DT, UPDATE_DT
+        ) VALUES (
+            SEQ_CHATROOM.NEXTVAL, #{SELLER_MEM_ID}, #{BUYER_MEM_ID}, #{PROD_ID}, SYSDATE, SYSDATE
+        )
+    </insert>
+
+    <!-- 채팅 내용 삽입 -->
+    <insert id="insertChatMessage" parameterType="map">
+        INSERT INTO CHAT_CONTENTS (
+            CHAT_CONT_ID, CHAT_ID, CHAT_CONTENTS, CHAT_TIME, CHAT_IMAGE_NAME, CHAT_IMAGE_PATH
+        ) VALUES (
+            SEQ_CHAT_CONTENTS.NEXTVAL, #{CHAT_ID}, #{CHAT_CONTENTS}, SYSDATE, #{CHAT_IMAGE_NAME}, #{CHAT_IMAGE_PATH}
+        )
+    </insert>
+
+    <!-- 채팅방 상태 업데이트 -->
+    <update id="updateChatRoomStatus" parameterType="map">
+        UPDATE CHATROOM
+        SET 
+            SELLER_STATUS = #{SELLER_STATUS}, 
+            BUYER_STATUS = #{BUYER_STATUS}, 
+            UPDATE_DT = SYSDATE
+        WHERE 
+            CHAT_ID = #{CHAT_ID}
+    </update>
+
+</mapper>

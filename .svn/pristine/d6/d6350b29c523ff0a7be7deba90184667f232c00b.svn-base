@@ -1,0 +1,381 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page session="false"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>채팅 화면</title>
+<style>
+/* 공통 스타일 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f9f9f9;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	margin: 0 10%;
+	border-radius: 5%;
+}
+
+/* 상태 바 */
+.status-bar {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-weight: bold;
+	font-size: 1rem;
+}
+
+/* 물품 정보 */
+.item-info {
+	display: flex;
+	align-items: center;
+	background-color: white;
+	padding: 15px;
+	border-bottom: 1px solid #ddd;
+}
+
+.item-info img {
+	width: 100px;
+	height: 100px;
+	border-radius: 10px;
+	margin-right: 15px;
+	object-fit: cover;
+}
+
+.item-details {
+	flex: 1;
+}
+
+.item-details div {
+	margin: 5px 0;
+	font-size: 14px;
+}
+
+.item-details .title {
+	font-size: 1.1rem;
+	font-weight: bold;
+}
+
+/* 거래 진행도 */
+.progress {
+	display: flex;
+	justify-content: space-around;
+	padding: 10px 0;
+	background-color: #f4f4f4;
+	border-bottom: 1px solid #ddd;
+}
+
+.progress div {
+	flex: 1;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+	color: #888;
+	cursor: pointer;
+}
+
+.progress div.active {
+	color: white;
+	background-color: #4CAF50;
+	padding: 8px 0;
+	border-radius: 5px;
+}
+
+/* 채팅 영역 */
+.chat-container {
+	flex: 1;
+	overflow-y: auto;
+	padding: 10px;
+	background-color: #fff;
+}
+
+.message {
+	display: flex;
+	margin-bottom: 15px;
+	font-size: 14px;
+	align-items: center;
+}
+
+.message img {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-right: 10px;
+	object-fit: cover;
+}
+
+.message.right {
+	justify-content: flex-end;
+}
+
+.message .content {
+	max-width: 60%;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: #f1f1f1;
+	position: relative;
+}
+
+.message.right .content {
+	background-color: #4CAF50;
+	color: white;
+}
+
+.message .time {
+	font-size: 10px;
+	color: #888;
+	margin-left: 5px;
+}
+
+/* 입력창 */
+.input-container {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	background-color: #f4f4f4;
+	border-top: 1px solid #ddd;
+}
+
+.input-container button {
+	background: none;
+	border: none;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+.input-container button img {
+	width: 25px;
+	height: 25px;
+}
+
+.input-container input {
+	flex: 1;
+	padding: 10px;
+	border-radius: 20px;
+	border: 1px solid #ddd;
+	outline: none;
+	font-size: 14px;
+}
+
+/* 반응형 */
+@media ( max-width : 768px) {
+	body {
+		font-family: Arial, sans-serif;
+		background-color: #f9f9f9;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+	}
+	.item-info img {
+		width: 80px;
+		height: 80px;
+	}
+	.message .content {
+		max-width: 80%;
+	}
+	.progress div {
+		font-size: 10px;
+	}
+}
+</style>
+</head>
+<body id="page-top">
+	<section class="page-section" id="contact">
+		<div class="container" style="margin-top: 100px;">
+			<div id="chat-containerK">
+				<div class="chatWrap">
+					<!-- 방 정보 -->
+					<div class="main_tit">
+                        <h1>방 정보: []</h1>
+                    </div>
+					<div class="content chatcontent border border-secondary"
+						data-room-no="">
+						<div id="list-guestbook"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- 상태 바 -->
+	<div class="status-bar">
+		<span>아이디: user123</span> <span>신뢰도: 90%</span>
+	</div>
+
+	<!-- 물품 정보 -->
+	<div class="item-info">
+		<img src="https://via.placeholder.com/100" alt="물품 이미지">
+		<div class="item-details">
+			<div class="title">물품 제목: 신선한 채소</div>
+			<div>가격: 10,000원</div>
+			<div>거래 희망 지역: 서울시 강남구</div>
+		</div>
+	</div>
+
+	<!-- 거래 진행도 -->
+	<div class="progress" id="progress">
+		<div onclick="updateProgress(0)">약속잡기</div>
+		<div onclick="updateProgress(1)">거래완료</div>
+		<div onclick="updateProgress(2)">후기 보내기</div>
+	</div>
+
+	<!-- 채팅 영역 -->
+	<div class="chat-container">
+	</div>
+
+	<!-- 입력창 -->
+	<div class="input-container">
+		<button>
+			<img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png"
+				alt="추가 버튼">
+		</button>
+		<input type="text" placeholder="메시지를 입력해주세요">
+		<button>
+			<img src="https://cdn-icons-png.flaticon.com/512/742/742751.png"
+				alt="이모지">
+		</button>
+		<button id="btnSend">
+			<img src="https://cdn-icons-png.flaticon.com/512/786/786205.png"
+				alt="전송">
+		</button>
+	</div>
+
+
+	<!-- jQuery CDN 추가 -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- SockJS와 STOMP CDN 추가 -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script>
+    function updateProgress(index) {
+        const steps = document.querySelectorAll('.progress div');
+        steps.forEach((step, i) => {
+            step.classList.toggle('active', i <= index);
+        });
+    }
+    $(document).ready(function () {
+        var client;
+        var memId = 'test';
+        var memNm = 'test';
+        var profileImg = '';
+        var chatId = '1';
+
+        // 페이지 로드 후 바로 채팅 스크롤 하단으로 이동
+        scroll_down();
+
+        var sock = new SockJS("<c:url value='/endpoint' />");
+        client = Stomp.over(sock);
+
+        // 최초 연결 시 실행
+        client.connect({"userId": memId, "chatId": chatId}, function () {
+            // 메시지 수신 (서버에서 전달된 메시지 처리)
+            client.subscribe("/subscribe/chat/" + chatId, function (chat) {
+                var body = JSON.parse(chat.body);
+                if (body.type === 'notification') {
+                    var html = "<div class='notification'>" + body.message + "</div>";
+                    $(".chat-container").append(html);
+                } else {
+                	$(".chat-container").append(renderList(body)); 
+                }
+                scroll_down();
+            });
+        });
+
+        // 메시지 전송
+        function sendmsg() {
+            var msg = $("#msgi").val();
+            if (msg === "") {
+                return false;
+            }
+
+            client.send("/app/hello/" + chatId, {}, JSON.stringify({
+                chatMsg: msg,
+                memId: memId,
+                chatId: chatId,
+                memNm: memNm,
+                profileImg: profileImg
+            }));
+
+            $("#msgi").val('');  // 전송 후 메시지 입력창 비우기
+        }
+
+     // 메시지 출력 함수
+        function renderList(vo) {
+            var str = "";
+            var content = "";
+            var img = vo.profileImg || '/assets/img/non.png';  // 프로필 이미지가 없으면 기본 이미지
+
+            // 내가 보낸 메시지
+            if (vo.memId === memId) {
+                content = "<p class='myChat chat-box text-left p-3'>" + vo.chatMsg + "</p>";
+                str = "<div class='message right'>" + // 오른쪽 정렬
+                    "<span class='time'>" + vo.sendDate + "</span>" +
+                    "<div class='content'>" + vo.chatMsg + "</div>" +
+                    "<img src='" + img + "' alt='프로필'>" +
+                    "</div>";
+            }
+            // 다른 사람이 보낸 메시지
+            else {
+                content = "<p class='chat-box bg-light p-3'>" + vo.chatMsg + "</p>";
+                str = "<div class='message'>" + // 왼쪽 정렬
+                    "<img src='" + img + "' alt='프로필'>" +
+                    "<div class='content'>" + vo.chatMsg + "</div>" +
+                    "<span class='time'>" + vo.sendDate + "</span>" +
+                    "</div>";
+            }
+
+            $(".chat-container").append(str);  // .chat-container에 메시지 추가
+            scroll_down();  // 스크롤을 하단으로
+        }
+
+
+        // 메시지 전송 버튼 클릭 시
+        $("#btnSend").click(function () {
+            sendmsg();
+        });
+
+        // 엔터키를 눌러서 메시지 전송
+        $("#msgi").keydown(function (e) {
+            if (e.keyCode === 13) {
+                sendmsg();
+            }
+        });
+
+        // 채팅방 나가기
+        $("#btnOut").click(function () {
+            disconnect();
+            location.href = "<c:url value='/chatListView' />";
+        });
+
+        // 채팅방 나가기 처리
+        function disconnect() {
+            if (client != null) {
+                client.send("/subscribe/chat/" + chatId, {},
+                    JSON.stringify({"type": "notification", "message": memId + "님이 나가셨습니다..."}));
+                client.disconnect();
+            }
+        }
+
+        // 스크롤 자동 하단으로 이동
+        function scroll_down() {
+            $(".chatcontent").scrollTop($(".chatcontent")[0].scrollHeight);
+        }
+    });
+</script>
+</body>
+</html>

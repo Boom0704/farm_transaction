@@ -1,0 +1,38 @@
+package com.future.blue.purchase.vo;
+
+public class ChatVO {
+    private String sellerMemId;
+    private String updateDt;
+    private String lastMessage;
+
+    // Getter와 Setter
+    public String getSellerMemId() {
+        return sellerMemId;
+    }
+
+    public void setSellerMemId(String sellerMemId) {
+        this.sellerMemId = sellerMemId;
+    }
+
+    public String getUpdateDt() {
+        return updateDt;
+    }
+
+    public void setUpdateDt(String updateDt) {
+        this.updateDt = updateDt;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+	@Override
+	public String toString() {
+		return "ChatVO [sellerMemId=" + sellerMemId + ", updateDt=" + updateDt + ", lastMessage=" + lastMessage + "]";
+	}
+    
+}

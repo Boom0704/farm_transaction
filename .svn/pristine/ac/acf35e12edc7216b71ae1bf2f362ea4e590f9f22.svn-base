@@ -1,0 +1,5 @@
+package com.future.blue.sell.vo;
+
+public class SellVO {
+
+}

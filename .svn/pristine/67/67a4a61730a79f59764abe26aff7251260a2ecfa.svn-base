@@ -1,0 +1,5 @@
+#local img path
+file.upload.path=C:\\tools\\img_repo
+#ubunto file path
+#file.upload.path=/home/server2/Downloads/img_repo
+file.download.path=/download?imageFileName=

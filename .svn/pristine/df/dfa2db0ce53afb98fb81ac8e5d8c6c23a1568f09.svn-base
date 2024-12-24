@@ -1,0 +1,81 @@
+// 게시판 파일 관련 데이터 저장
+
+package com.future.blue.board.vo;
+
+import java.util.Date;
+
+public class BoardFileVO {
+    private int fileId;           // 파일 넘버
+    private int boardId;          // 게시글 넘버
+    private String filePath;      // 파일 경로
+    private String fileName;      // 파일명
+    private Date createDt;        // 생성일
+    private Date updateDt;        // 수정일
+    private char useYn;           // 사용여부
+
+    
+    /** Getters / Setters 메소드
+     *  메소드를 통해 데이터 접근 유도.
+     *  오브젝트 내의 함수들을 괄호없이 쓸 수 있게 만들어 줌.
+     *  결론: 데이터의 무결성 보존을 위해 사용.
+     *  get: 데이터 가져옴 / set: 데이터 입력, 수정
+     *  ** 규칙 **
+     *  get: 파라미터 x, 함수 내에 return
+     *  set: 파라미터 존재
+     * **/
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
+
+    public int getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(int boardId) {
+        this.boardId = boardId;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Date getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
+    }
+
+    public Date getUpdateDt() {
+        return updateDt;
+    }
+
+    public void setUpdateDt(Date updateDt) {
+        this.updateDt = updateDt;
+    }
+
+    public char getUseYn() {
+        return useYn;
+    }
+
+    public void setUseYn(char useYn) {
+        this.useYn = useYn;
+    }
+}

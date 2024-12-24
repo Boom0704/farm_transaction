@@ -1,0 +1,51 @@
+package com.future.blue.handler;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+public class ChatWebSocketHandler extends TextWebSocketHandler {
+
+	// 현재 연결된 클라이언트 세션을 저장하는 Set
+    private final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
+
+    /**
+     * 클라이언트가 WebSocket에 연결되었을 때 호출됩니다.
+     * @param session 연결된 클라이언트의 세션 정보
+     */
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) {
+        sessions.add(session); // 클라이언트 세션을 저장
+        System.out.println("새로운 세션이 연결되었습니다: " + session.getId());
+    }
+
+    /**
+     * 클라이언트가 메시지를 보냈을 때 호출됩니다.
+     * @param session 메시지를 보낸 클라이언트의 세션
+     * @param message 클라이언트가 보낸 메시지
+     */
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        System.out.println("수신된 메시지: " + message.getPayload());
+
+        // 연결된 모든 클라이언트에게 메시지를 전송 (브로드캐스트)
+        for (WebSocketSession wsSession : sessions) {
+            wsSession.sendMessage(message);
+        }
+    }
+
+    /**
+     * 클라이언트가 연결을 종료했을 때 호출됩니다.
+     * @param session 종료된 클라이언트의 세션
+     * @param status 연결 종료 상태
+     */
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) {
+        sessions.remove(session); // 클라이언트 세션을 제거
+        System.out.println("세션이 종료되었습니다: " + session.getId());
+    }
+}

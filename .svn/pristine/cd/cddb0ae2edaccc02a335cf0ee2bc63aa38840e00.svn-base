@@ -1,0 +1,33 @@
+package com.future.blue.purchase.service;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.future.blue.purchase.dao.IChatDAO;
+import com.future.blue.purchase.vo.ChatVO;
+import com.future.blue.purchase.vo.RoomVO;
+
+@Service
+public class ChatService {
+	
+	@Autowired
+	IChatDAO dao;
+	
+	public ArrayList<RoomVO> getRoomList(){
+		return dao.getRoomList();
+	}
+	
+	public void createRoom(RoomVO roomVO) {
+		dao.createRoom(roomVO);
+	}
+
+	public ArrayList<ChatVO> getChatList(int roomNo){
+		return dao.getChatList(roomNo);
+	}
+
+	public void insertChat(ChatVO vo) {
+		dao.insertChat(vo);
+	}
+}
