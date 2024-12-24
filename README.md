@@ -1,47 +1,52 @@
 # 푸른이음 프로젝트 (GreenBridge)
 
-푸른이음은 도시농업에서 발생하는 잉여 농작물을 소비자와 연결하여 직거래를 가능하게 하는 친환경 플랫폼입니다. 이 프로젝트는 환경적, 사회적 가치를 중심으로 설계되었으며, 탄소중립과 지속 가능한 소비 문화 확산을 목표로 합니다.
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Spring](https://img.shields.io/badge/framework-Spring-brightgreen)
 
-## 프로젝트 개요
+푸른이음은 도시농업에서 발생하는 잉여 농작물을 소비자와 연결하여 거래를 가능하게 하는 친환경 플랫폼입니다.  
+도시와 자연을 이어주며, 농작물 낭비 해결과 지속 가능한 소비 문화를 확산하는 데 목표를 둔 프로젝트입니다.
+
+---
+
+## 📖 프로젝트 개요
 
 - **프로젝트 이름**: 푸른이음 (GreenBridge)
-- **주요 목표**:
-  - 잉여 농작물의 효율적 활용
-  - 탄소 배출 감소
-  - 지속 가능한 소비 문화 확산
 - **주요 기능**:
-  - 머신러닝을 활용한 작물 자동 판별
-  - 지도 API를 통한 거래 위치 자동 입력
-  - 탄소 발걸음 시스템으로 친환경 행동 장려
+  - **카카오 맵 API**를 이용한 거래 위치 자동 입력
+  - **카카오 소셜 로그인**을 통한 간편한 사용자 인증
+  - **머신러닝 기반** 이미지 판별로 판매글 자동 생성
+  - **친환경 거래 촉진**을 위한 탄소 발걸음 포인트 시스템
+- **주요 목표**:
+  - 잉여 농작물 문제 해결
+  - 탄소중립 실현
+  - 도시농업 활성화 및 지속 가능한 소비 문화 확산
 
 ---
 
-## 주요 기능
+## 🚀 기술 스택
 
-### 1. 자동화된 판매 프로세스
-- **이미지 업로드**: 머신러닝으로 업로드된 이미지를 분석해 작물을 자동 판별합니다.
-- **위치 자동 입력**: 지도 API를 활용하여 거래 희망 장소를 자동으로 입력합니다.
-- **간단한 판매글 작성**: 사용자는 거래 방식과 가격만 입력하면 됩니다.
-
-### 2. 사용자 친화적인 UI/UX
-- **직관적 디자인**: 중장년층도 쉽게 사용할 수 있도록 설계되었습니다.
-- **탄소 발걸음 시스템**: 친환경 소비 행동(걷기/자전거)을 포인트로 보상합니다.
-
----
-
-## 기술 스택
-
-- **Frontend**: React.js, TailwindCSS
-- **Backend**: Node.js, Express
-- **Database**: MongoDB
-- **API Integration**: Google Maps API, Custom ML API
-- **Machine Learning**: TensorFlow.js for image recognition
+- **Frontend**: JSP, HTML/CSS
+- **Backend**: Spring Framework
+- **Build Tool**: Maven
+- **Database**: Oracle Database
+- **API Integration**:
+  - [카카오 맵 API](https://developers.kakao.com/) (거래 위치 표시)
+  - [카카오 소셜 로그인 API](https://developers.kakao.com/) (사용자 인증)
+  - Custom ML API (머신러닝 기반 작물 판별)
+- **Machine Learning**: TensorFlow (Image Recognition)
 
 ---
 
-## 설치 및 실행
+## 📂 프로젝트 구조
 
-1. **클론 리포지토리**:
-   ```bash
-   git clone https://github.com/your-repo-url
-   cd your-repo
+```plaintext
+farm_transaction/
+├── src/
+│   ├── main/
+│   │   ├── java/          # Java 백엔드 코드
+│   │   ├── resources/     # 설정 파일 및 SQL 스크립트
+│   │   └── webapp/        # JSP 및 Frontend 리소스
+│   │       ├── WEB-INF/   # JSP 및 View 템플릿
+│   │       └── static/    # 정적 파일 (CSS/JS)
+├── pom.xml                # Maven 설정 파일
+└── README.md              # 프로젝트 소개 파일
