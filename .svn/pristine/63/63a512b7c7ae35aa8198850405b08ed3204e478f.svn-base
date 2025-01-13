@@ -1,0 +1,207 @@
+// 게시판 비즈니스 로직 
+
+package com.future.blue.board.service;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.future.blue.board.dao.BoardDAO;
+import com.future.blue.board.vo.BoardCommentVO;
+import com.future.blue.board.vo.BoardFileVO;
+import com.future.blue.board.vo.BoardLikeVO;
+import com.future.blue.board.vo.BoardVO;
+import com.future.blue.board.vo.SearchVO;
+import com.future.blue.common.web.FileController;
+
+@Service
+public class BoardService {
+
+	// Repository 주입 (DB에서 데이터를 조회)
+	@Autowired
+	private BoardDAO boardDAO;
+	
+	@Autowired
+	private FileController fileController; // FileController 사용
+
+	// 게시글 목록 조회
+    public List<BoardVO> getBoardList(SearchVO searchVO) {
+    	// 전체 건수 조회
+		int totalRowCount = boardDAO.getTotalCount(searchVO);
+		searchVO.setTotalRowCount(totalRowCount);
+		// 검색 조건으로 검색된 전체 건수를 기준으로 세팅!
+		searchVO.pageSetting();  
+        return boardDAO.getBoardList(searchVO);
+    }
+    
+    // 게시글 상세 조회 + 조회수 증가
+    @Transactional
+    public BoardVO getBoardDetail(Long boardId) {
+        try {
+        	int updateCount = boardDAO.increaseBoardHit(boardId.intValue());		// 조회수 증가
+        	if (updateCount == 0) {
+                throw new RuntimeException("조회수 증가에 실패했습니다.");
+            }
+
+            // 게시글 상세 조회
+            BoardVO boardVO = boardDAO.getBoardDetail(boardId.intValue());
+            if (boardVO == null) {
+                throw new RuntimeException("게시글을 찾을 수 없습니다.");
+            }
+
+            return boardVO;
+        } catch (DataAccessException e) {
+            throw new RuntimeException("게시글 상세 조회 중 데이터베이스 오류 발생", e);
+        } catch (Exception e) {
+            throw new RuntimeException("게시글 상세 조회 처리 중 오류 발생", e);
+        }
+    }
+    
+	// 게시글 작성
+	public int createBoard(BoardVO board) {
+		try {
+            return boardDAO.createBoard(board);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("게시글 작성 중 오류 발생", e);
+        }
+    }
+	
+	/**
+     * 게시글 저장 (파일 포함)
+     * @param boardVO 게시글 정보
+     * @param file 업로드된 파일
+     * @throws IOException 파일 업로드 중 오류가 발생한 경우
+     */
+	@Value("${file.filePath}")
+    private String filePath;
+	
+    @Transactional
+    public void saveBoard(BoardVO boardVO, MultipartFile file) throws IOException {
+        // 1. 게시글 정보 저장
+        boardDAO.insertBoard(boardVO);
+
+        // 2. 파일 처리 (파일 있을 경우)
+        if (file != null && !file.isEmpty()) {
+            // 파일 저장
+        	File dest = new File(filePath, file.getOriginalFilename());
+            dest.getParentFile().mkdirs(); // 디렉토리 없으면 생성
+            file.transferTo(dest);         // 파일 저장
+
+            // 3. 파일 정보 DB 저장
+            BoardFileVO boardFileVO = new BoardFileVO();
+            boardFileVO.setBoardId(boardVO.getBoardId()); 	     // 방금 저장된 게시글 ID 설정
+            boardFileVO.setFilePath(dest.getAbsolutePath());     // 파일 경로 설정
+            boardFileVO.setFileName(file.getOriginalFilename()); // 파일 이름 설정
+
+            boardDAO.addBoardFile(boardFileVO);
+        }
+    }
+	
+	// 게시글 저장(파일 없이)
+	public void saveBoard(BoardVO boardVO) throws IOException {
+        saveBoard(boardVO, null); // 파일 없이 호출 시 null 전달
+    }
+		
+	// 게시글 수정
+	@Transactional
+	public int updateBoard(BoardVO board) {
+	    try {
+	        return boardDAO.updateBoard(board);
+	    } catch (DataAccessException e) {
+	        throw new RuntimeException("게시글 수정 중 오류 발생", e);
+	    }
+	}
+
+	// 게시글 삭제
+	public int deleteBoard(int boardId) {
+		try {
+            return boardDAO.deleteBoard(boardId);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("게시글 삭제 중 오류 발생", e);
+        }
+    }
+
+	// 댓글 추가
+	public void addComment(BoardCommentVO comment) {
+        try {
+            boardDAO.addComment(comment);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("댓글 작성 중 오류 발생", e);
+        }
+    }
+
+	// 특정 게시글의 댓글 목록 조회
+	public List<BoardCommentVO> getComments(int boardId) {
+		try {
+            return boardDAO.getComments(boardId);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("댓글 목록 조회 중 오류 발생", e);
+        }
+    }
+
+	// 댓글 삭제
+	public int deleteComment(int commentId) {
+		try {
+            return boardDAO.deleteComment(commentId);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("댓글 삭제 중 오류 발생", e);
+        }
+    }
+
+	// 좋아요 추가
+	public int addLike(BoardLikeVO like) {
+		try {
+            return boardDAO.addLike(like);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("좋아요 추가 중 오류 발생", e);
+        }
+    }
+
+	// 좋아요 제거
+    @Transactional
+    public void removeLike(BoardLikeVO like) {
+        try {
+            boardDAO.removeLike(like);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("좋아요 제거 중 오류 발생", e);
+        }
+    }
+
+	// 특정 게시글의 좋아요 수 조회
+	public int getLikeCount(int boardId) {
+		try {
+            return boardDAO.getLikeCount(boardId);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("좋아요 수 조회 중 오류 발생", e);
+        }
+    }
+
+	// 특정 사용자가 게시글에 좋아요를 눌렀는지 확인
+	public int isLikedByUser(int boardId, String memId) {
+		try {
+            return boardDAO.isLikedByUser(boardId, memId);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("좋아요 여부 확인 중 오류 발생", e);
+        }
+    }
+
+	 // 게시글 상세 조회 + 조회수 증가
+    @Transactional
+    public BoardVO getBoardDetail(int boardId) {
+        try {
+            boardDAO.increaseBoardHit(boardId); // 조회수 증가
+            return boardDAO.getBoardDetail(boardId); // 게시글 상세 조회
+        } catch (DataAccessException e) {
+            throw new RuntimeException("게시글 상세 조회 중 오류 발생", e);
+        }
+    }
+	
+
+}

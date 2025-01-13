@@ -1,0 +1,131 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f9f9f9;
+}
+
+.container-h {
+    position: relative;
+    max-width: 1200px;
+    margin: auto;
+    padding-bottom: 30px;
+    padding: 0 20px; /* 좌우 여백 추가 */
+}
+/* 판매 등록 버튼 고정 스타일 */
+.fixed-sell-button {
+    position: fixed;
+    bottom: 20%;
+    right: 10%;
+    z-index: 1000;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.fixed-sell-button:hover {
+    background-color: #0056b3;
+}
+
+
+.search-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 70%;
+    padding: 10px;
+    margin-right:5px;
+    font-size: 1rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px 0 0 5px;
+}
+
+.search-button {
+    padding: 8px;
+    font-size: 1.2rem;
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: var(--accent-color);
+}
+
+/* 카드 스타일 */
+.card-prod {
+    background-color: var(--light-color);
+    border: 1px solid var(--card-shadow);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--card-shadow);
+    padding: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-prod:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.fixed-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.card-body {
+    padding: 5px;
+    color: var(--text-color);
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 3px;
+    color: var(--primary-color);
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+/* 반응형 */
+@media screen and (max-width: 768px) {
+    .search-input {
+        width: 100%;
+    }
+
+    .search-button {
+        width: 50px;
+        border-radius: 5px;
+    }
+
+    .card-prod {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .fixed-image {
+        margin-bottom: 10px;
+    }
+}
