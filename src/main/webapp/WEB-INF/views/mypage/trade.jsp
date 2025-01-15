@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나의 판매내역</title>
+    <title>나의 거래내역</title>
     <style>
         /* 기본 스타일 */
          h1 {
@@ -217,7 +217,7 @@
 		</c:forEach>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/inc/common/footer.jsp"></jsp:include>
 <script>
     // 탭 전환 기능
     const sellingTab = document.getElementById("sellingTab");

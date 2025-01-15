@@ -25,8 +25,8 @@ public class DiaryController {
 
 	@Autowired
 	private DiaryService diaryService;
-	private CommentService commentService;
-
+    @Autowired
+    private CommentService commentService;
 	// 다이어리 생성 화면
 	@GetMapping("/create")
 	public String createDiary() {
@@ -90,35 +90,47 @@ public class DiaryController {
 
 	@GetMapping("/detail/{diaryId}")
 	public String viewDiary(@PathVariable int diaryId, Model model) {
-	    try {
-	        // 다이어리 조회수 증가
-	        diaryService.incrementHit(diaryId);
+		try {
+			// 다이어리 조회수 증가
+			diaryService.incrementHit(diaryId);
 
-	        // 다이어리 조회 (null 체크 추가)
-	        DiaryVO diary = diaryService.getDiaryById(diaryId);
-	        if (diary == null) {
-	            // 다이어리가 없을 경우 처리 로직 (예: 에러 페이지로 이동)
-	            return "error/404"; // 다이어리가 없을 때 404 페이지로 리다이렉트
-	        }
+			// 다이어리 조회
+			DiaryVO diary = diaryService.getDiaryById(diaryId);
 
-	        // 다이어리 좋아요 목록 조회 (null 체크 추가)
-	        List<String> likesList = diaryService.getLikesList(diaryId);
-	        if (likesList == null) {
-	            likesList = new ArrayList<>(); // 좋아요 목록이 없으면 빈 리스트로 처리
-	        }
+			if (diary == null) {
+				// 다이어리가 없을 경우 빈 값을 전달
+				diary = new DiaryVO(); // 빈 다이어리 객체로 처리
+				model.addAttribute("diary", diary);
+				model.addAttribute("likesList", new ArrayList<>()); // 빈 리스트 전달
+				model.addAttribute("commentsList", new ArrayList<>()); // 빈 리스트 전달
+				return "board/diary/detail"; // 다이어리 상세 페이지로 리턴
+			}
 
-	        // 다이어리 상세 정보와 좋아요 목록을 화면으로 전달
-	        model.addAttribute("diary", diary);
-	        model.addAttribute("likesList", likesList);
+			// 다이어리 좋아요 목록 조회
+			List<String> likesList = diaryService.getLikesList(diaryId);
+			if (likesList == null) {
+				likesList = new ArrayList<>(); // 좋아요 목록이 없으면 빈 리스트로 처리
+			}
 
-	        return "board/diary/detail"; // 다이어리 상세 페이지로 리턴
-	    } catch (Exception e) {
-	        // 예외 발생 시 로깅 또는 처리 로직 추가
-	        e.printStackTrace();
-	        return "error/500"; // 500 오류 페이지로 리다이렉트
-	    }
+			// 다이어리 댓글 목록 조회
+			List<CommentVO> commentsList = commentService.getCommentsByDiaryId(diaryId);
+			if (commentsList == null) {
+				commentsList = new ArrayList<>(); // 댓글 목록이 없으면 빈 리스트로 처리
+			}
+
+			// 다이어리 상세 정보, 좋아요 목록, 댓글 목록을 화면으로 전달
+			model.addAttribute("diary", diary);
+			model.addAttribute("likesList", likesList);
+			model.addAttribute("commentsList", commentsList);
+
+			return "board/diary/detail"; // 다이어리 상세 페이지로 리턴
+		} catch (Exception e) {
+			// 예외 발생 시 로깅
+			e.printStackTrace();
+			model.addAttribute("error", "500");
+			return "error/500"; // 500 오류 페이지로 리다이렉트
+		}
 	}
-
 
 	// 다이어리 목록 화면 (페이지네이션, 정렬, 검색 처리)
 	@GetMapping("/list")
@@ -160,11 +172,11 @@ public class DiaryController {
 
 	@PostMapping("/toggleLike")
 	public @ResponseBody List<String> toggleLike(@RequestParam int diaryId, @RequestParam String memId) {
-	    // 좋아요 상태 변경
-	    diaryService.toggleLike(diaryId, memId);
+		// 좋아요 상태 변경
+		diaryService.toggleLike(diaryId, memId);
 
-	    // 해당 다이어리의 최신 좋아요 목록을 반환
-	    List<String> updatedLikes = diaryService.getLikesList(diaryId);
-	    return updatedLikes;
+		// 해당 다이어리의 최신 좋아요 목록을 반환
+		List<String> updatedLikes = diaryService.getLikesList(diaryId);
+		return updatedLikes;
 	}
 }

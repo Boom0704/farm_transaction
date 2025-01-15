@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상세 페이지</title>
     <style>
-         body {
+
+   body {
         margin: 0;
         padding: 0;
         background-color: var(--background-color);
@@ -195,14 +196,19 @@
     <div class="info">
         <div><strong>판매 지역:</strong> <span>${product.prodPlace}</span></div>
         <div><strong>품목:</strong> <span>${product.prodCategory}</span></div>
-        <div><strong>가격:</strong>
-            <span>
-                <c:choose>
-                    <c:when test="${product.prodPrice == 0}">나눔하기</c:when>
-                    <c:otherwise>${product.prodPrice}원</c:otherwise>
-                </c:choose>
-            </span>
-        </div>
+        <div>
+		    <strong>가격:</strong>
+		    <span>
+		        <c:choose>
+		            <c:when test="${product.prodPrice == 0}">
+		                <span style="color: #006400; font-weight: bold;">나눔하기</span>
+		            </c:when>
+		            <c:otherwise>
+		                <span style="color: #006400; font-weight: bold;">${product.formattedPrice}원</span>
+		            </c:otherwise>
+		        </c:choose>
+		    </span>
+		</div>
         <div><strong>등록일:</strong> <span>${product.createDt}</span></div>
     </div>
 

@@ -198,7 +198,7 @@
 		</c:forEach>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/inc/common/footer.jsp"></jsp:include>
 <script>
     // 탭 전환 기능
     const totalTab = document.getElementById("totalTab");

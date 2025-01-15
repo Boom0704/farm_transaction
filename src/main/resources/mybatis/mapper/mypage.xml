@@ -12,6 +12,7 @@
 			 , mem_reliability
 			 , mem_profile
 			 , mem_nic
+			 , create_date
 		FROM member
 		WHERE mem_id = #{memId}
 	</select>

@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
-import com.future.blue.board.vo.BoardFileVO;
 import com.future.blue.board.vo.BoardVO;
 import com.future.blue.board.vo.SearchVO;
 
@@ -20,6 +19,7 @@ import com.future.blue.board.vo.SearchVO;
 public interface BoardDAO {
 	
 	//게시글 관련 메서드
+	
 	public List<BoardVO> getBoardList(SearchVO searchVO);
     /**
      * 게시글 목록 조회 
@@ -65,20 +65,11 @@ public interface BoardDAO {
     int createBoard(BoardVO board) throws DataAccessException;  // 게시글 작성
     
     /**
-     * 
-     * @Author : KimYoonA
-     * @Date   : 2025. 1. 7.
-     * @Method : insertBoard
-     * @return : void
-     */
-    void insertBoard(BoardVO boardVO);
-    
-    /**
      * 게시글 수정
      * @param board 수정된 게시글 정보
-     * @return 성공 여부 (1: 성공, 0: 실패)
+     * @return 수정된 행 수
      */
-    int updateBoard(int boardId);  // 게시글 수정
+    int updateBoard(BoardVO board);  // 게시글 수정
     
     /**
      * 게시글 삭제
@@ -116,7 +107,7 @@ public interface BoardDAO {
      * @param boardId 게시글 ID
      * @return 파일 목록
      */
-    List<BoardFileVO> getBoardFiles(int boardId) throws DataAccessException;  // 파일 목록 조회
+    List<BoardVO> getBoardFiles(int boardId) throws DataAccessException;  // 파일 목록 조회
 
     
     // 댓글 처리 관련 메서드
@@ -157,7 +148,7 @@ public interface BoardDAO {
      * @param like 좋아요 정보
      * @return 성공 여부 (1: 성공, 0: 실패)
      */
-    int removeLike(BoardVO likeId);  // 좋아요 제거
+    int likeCencel(BoardVO likeId);  // 좋아요 제거
 
     /**
      * 특정 게시글의 좋아요 수 조회
@@ -166,6 +157,8 @@ public interface BoardDAO {
      */
     int getLikeCount(int boardId);  // 좋아요 수 조회
     
+    //
+    BoardVO selectBoardById(int boardId);
     
 }
 

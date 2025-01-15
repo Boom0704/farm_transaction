@@ -2,8 +2,6 @@ package com.future.blue;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -54,14 +52,6 @@ public class HomeController {
 	@Value("#{util['vapid.publicKey']}")
 	private String publicKey;
 	
-	/**
-	 * 메인페이지 상품 목록 로딩 (처음 20개 데이터를 조회하여 렌더링)
-	 * @param query (선택) 검색 키워드
-	 * @param model 모델 객체로 조회된 상품 목록과 검색 키워드를 전달
-	 * @param latitude (선택) 현재 위치 위도 (기본값: 36.35212915)
-	 * @param longitude (선택) 현재 위치 경도 (기본값: 127.37818526)
-	 * @return 상품 목록 페이지 뷰 이름 ("home")
-	 */
 	@GetMapping("/")
 	public String products(
 	    @RequestParam(value = "query", required = false) String query,
@@ -76,6 +66,18 @@ public class HomeController {
 	    model.addAttribute("vapidPublicKey", publicKey); // VAPID 키 전달
 	    
 	    return "home"; // 메인페이지
+	}
+
+	@GetMapping("/distance")
+	@ResponseBody
+	public List<ProductVO> loadProductsByDistance(
+	    @RequestParam(value = "query", required = false) String query,
+	    @RequestParam(value = "latitude") double latitude,
+	    @RequestParam(value = "longitude") double longitude,
+	    @RequestParam("offset") int offset) {
+
+	    // 거리순으로 상품 목록 조회
+	    return prodService.getProductsByDistance(query, offset, 4, latitude, longitude);
 	}
 
 	/**

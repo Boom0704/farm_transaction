@@ -3,7 +3,7 @@
 <mapper namespace="com.future.blue.auth.dao.IAuthDAO">
 	
 	<select id="loadUserByMemId" parameterType="String"  resultType="AuthVO" >
-		SELECT mem_id, mem_pass, mem_role, mem_name, mem_phone, mem_nic, mem_profile
+		SELECT mem_id, mem_pass, mem_role, mem_name, mem_phone, mem_nic, mem_profile, create_date
 		FROM member
 		WHERE mem_id = #{memId}
 	</select>
@@ -14,14 +14,14 @@
     </insert>
     
     <select id="findByNameAndMail" parameterType="Map" resultType="AuthVO">
-    	SELECT mem_id, mem_pass, mem_role, mem_name, mem_phone, mem_nic, mem_profile
+    	SELECT mem_id, mem_pass, mem_role, mem_name, mem_phone, mem_nic, mem_profile, create_date
 		FROM member
 		WHERE mem_phone = #{memPhone}
 		AND mem_name = #{memName}
     </select>
     
     <select id="findPassword" parameterType="Map" resultType="AuthVO">
-    	SELECT mem_id, mem_pass, mem_role, mem_name, mem_phone, mem_nic, mem_profile
+    	SELECT mem_id, mem_pass, mem_role, mem_name, mem_phone, mem_nic, mem_profile, create_date
 		FROM member
 		WHERE mem_id = #{memId}
 		AND mem_phone = #{memPhone}
@@ -44,7 +44,7 @@
 	</insert>
 	
 	<select id='loadUserByKakaoId' parameterType="String" resultType="KakaoVO">
-		SELECT mem_id, mem_pass, mem_role, mem_name, mem_phone, mem_nic, mem_profile, mem_addr
+		SELECT mem_id, mem_pass, mem_role, mem_name, mem_phone, mem_nic, mem_profile, mem_addr, create_date
 		FROM member
 		WHERE mem_id = #{memId}
 	</select>

@@ -241,9 +241,30 @@ h1 {
 			</c:if>
 			<c:if test="${not empty commentsList}">
 				<ul id="commentsList">
-					<c:forEach var="comment" items="${commentsList}">
-						<li><strong>${comment.name}:</strong> ${comment.content}</li>
-					</c:forEach>
+
+<c:forEach var="comment" items="${commentsList}">
+    <!-- 부모 댓글만 출력 -->
+    <c:if test="${comment.parentCommentId == null}">
+        <li style="overflow: auto; padding: 10px; border-bottom: 1px solid #eee;">
+            <!-- 작성자(memId)는 연두색 -->
+            <strong style="color: #4CAF50;">${comment.memId}</strong>:
+            <!-- 댓글 내용 처리: useYnStr이 'Y'이면 내용, 아니면 '삭제된 댓글입니다.' (연한 회색) -->
+            <c:choose>
+                <c:when test="${comment.useYnStr eq 'Y'}">
+                    ${comment.commentContent}
+                </c:when>
+                <c:otherwise>
+                    <span style="color: #ccc;">삭제된 댓글입니다.</span>
+                </c:otherwise>
+            </c:choose>
+            <!-- 오른쪽 끝에 작성일(createDt) 표시 -->
+            <span style="float: right; font-size: 0.85em; color: #666;">${comment.createDt}</span>
+        </li>
+    </c:if>
+</c:forEach>
+
+
+
 				</ul>
 			</c:if>
 		</div>
@@ -252,25 +273,6 @@ h1 {
 	<jsp:include page="/WEB-INF/inc/common/footer.jsp"></jsp:include>
 
 	<script>
-    // 쿠키에서 JWT 값 가져오는 함수
-    function getCookie(name) {
-        var cookieArray = document.cookie.split(';');
-        for (var i = 0; i < cookieArray.length; i++) {
-            var cookie = cookieArray[i].trim();
-            if (cookie.indexOf(name + "=") == 0) {
-                return cookie.substring(name.length + 1, cookie.length);
-            }
-        }
-        return "";
-    }
-
-    // JWT 디코딩 및 sub 값 추출
-    function getSubFromJWT(token) {
-        var decoded = KJUR.jws.JWS.parse(token);  // JWT 디코딩
-        return decoded.payloadObj.sub;  // payload에서 sub 값을 추출
-    }
-
-
     // 쿠키에서 JWT 값 가져오는 함수
     function getCookie(name) {
         var cookieArray = document.cookie.split(';');

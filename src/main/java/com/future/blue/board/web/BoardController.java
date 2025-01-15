@@ -22,6 +22,12 @@ import com.future.blue.board.vo.BoardVO;
 import com.future.blue.board.vo.SearchVO;
 
 
+
+/** @Controller vs @RestController(요즘)
+ *  Controller의 두 종류.
+ *  @Controller : view 값을 바로 끌고 옴. ex) HTML
+ *  @RestController : Json 타입으로 값을 반환. -> 프론트에서 재가공.
+ */
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -38,7 +44,7 @@ public class BoardController {
 
     // 게시글 목록 조회
     @RequestMapping("/list")
-    public String getBoardList( @ModelAttribute("searchVO") SearchVO searchVO, Model model) {
+    public String getBoardList(@ModelAttribute("searchVO") SearchVO searchVO, Model model) {
         List<BoardVO> boardList = boardService.getBoardList(searchVO);
         model.addAttribute("boardList", boardList);
         return "board/free/list";
@@ -97,26 +103,29 @@ public class BoardController {
     // 게시글 수정 페이지
     @GetMapping("/edit/{boardId}")
     public String editBoardForm(@PathVariable int boardId, Model model) {
-        BoardVO board = boardService.getBoardDetail(boardId);
+    	// 서비스 호출
+        BoardVO board = boardService.getBoardById(boardId);
         if (board == null) {
-            return "error/404";
+            return "error/404"; // 게시글 없는 경우
         }
-        model.addAttribute("board", board);
-        return "board/free/edit";
+        model.addAttribute("board", board); // 모델에 게시글 정보 추가
+        return "board/free/edit"; // 수정 페이지로 리턴
     }
 
     // 게시글 수정 처리
     @PostMapping("/edit")
     public String editBoard(@ModelAttribute BoardVO board) {
+    	// 서비스 호출
     	int result = boardService.updateBoard(board);
         if (result == 0) {
-    		return "error/404";
+    		return "error/404"; // 수정 실패 시
         }
-    	return "redirect:/board/detail/{boardId}";
+        // 수정 시 게시글 상세 페이지로 리다이렉트
+    	return "redirect:/board/detail/" + board.getBoardId();
     }
 
 	// 게시글 삭제
-	@GetMapping("/delete/{boardId}") 
+	@GetMapping("/delete") 
 	public String deleteBoard(@PathVariable int boardId) {
 		int result = boardService.deleteBoard(boardId);
         if (result == 0) {
@@ -124,35 +133,35 @@ public class BoardController {
         }
         return "redirect:/board/free/list"; 
 	}
-	
 	// 댓글 작성
+	@ResponseBody
 	@PostMapping("/comment")
     public String addComment(@RequestParam int boardId, @RequestParam String content, @AuthenticationPrincipal UserDetails userDetails) {
-		if (userDetails == null) {
-	        return "redirect:/board/detail?boardId=" + boardId;
-	    }
-		
-		BoardVO comments = new BoardVO();
-		comments.setBoardId(boardId);
-		comments.setCommentContent(content);
-		comments.setMemId(userDetails.getUsername()); // 로그인된 사용자 정보 -> 작성자에 자동으로 설정
-		
-        boardService.addComment(comments);
+        if (userDetails == null) {
+        return "redirect:/board/detail?boardId=" + boardId;
         
-        return "redirect:/board/detail/" + boardId;
+        }
+    
+        BoardVO comment = new BoardVO();
+    	comment.setBoardId(boardId);
+    	comment.setCommentContent(content);
+    	comment.setMemId(userDetails.getUsername());   // 로그인된 사용자 정보 -> 작성자에 자동으로 설정
+    	boardService.addComment(comment);  			   // 수정된 addComment 메서드 호출
+
+    	return "redirect:/board/detail/" + boardId;
     }
-	
-	// 좋아요 추가
-	@PostMapping("/like")
-    public ResponseEntity<String> addLike(@RequestBody BoardVO like) {
+        
+	// 좋아요 클릭(추가)
+	@PostMapping("/addLike")
+    public ResponseEntity<String> addLikes(@RequestBody BoardVO like) {
         boardService.addLike(like);
         return ResponseEntity.ok("${board.memId}님이 게시물을 좋아합니다.");
     }
 
     // 좋아요 제거
-    @PostMapping("/like/remove")
-    public ResponseEntity<String> removeLike(@RequestBody BoardVO like) {
-        boardService.removeLike(like);
+    @PostMapping("/likeCencel")
+    public ResponseEntity<String> likeCencel(@RequestBody BoardVO like) {
+        boardService.likeCencel(like);
         return ResponseEntity.ok("${board.memId}님이 게시물 좋아요를  취소합니다.");
     }
     

@@ -18,5 +18,6 @@ public class MypageVO {
 	private String memRel;
 	private String memProfile;
 	private String memNic;
+	private String createDate;
 	
 }

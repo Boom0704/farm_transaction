@@ -32,6 +32,8 @@
 		<typeAlias type="com.future.blue.mypage.vo.MypageChatVO" alias="MypageChatVO"/>
 		<typeAlias type="com.future.blue.mypage.vo.MypageTradeVO" alias="MypageTradeVO"/>
 		<typeAlias type="com.future.blue.mypage.vo.MypageReviewVO" alias="MypageReviewVO"/>
+		<typeAlias type="com.future.blue.admin.vo.AdminVO" alias="AdminVO"/>
+		<typeAlias type="com.future.blue.admin.vo.CntVO" alias="CntVO"/>
 		
 	</typeAliases>
 	

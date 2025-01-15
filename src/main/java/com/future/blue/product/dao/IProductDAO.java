@@ -52,6 +52,11 @@ public interface IProductDAO {
      *         - PROD_ID: 연결된 상품 ID
      */
     public PhotoVO selectFirstPhotoByprodId(int prodId);
+    
+    /*
+     * 최신순으로 목록 조회
+     * */
+    public List<ProductVO> selectProductsByNewest(Map<String,Object> param);
 	
 	/**
      * 상품 상세 정보를 조회합니다.

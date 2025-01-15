@@ -16,5 +16,5 @@ public class AuthVO {
 	private String memPhone;
 	private String memNic;
 	private String memProfile;
-	
+	private String createDate;
 }

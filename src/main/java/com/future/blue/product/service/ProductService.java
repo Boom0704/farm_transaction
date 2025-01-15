@@ -111,6 +111,34 @@ public class ProductService {
 	    return list;
 	}
 	
+	public List<ProductVO> selectProductsByNewest(String query, int offset, int limit) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("query", query);
+	    params.put("offset", offset);
+	    params.put("limit", limit);
+	    return ProdDAO.selectProductsByNewest(params);
+	}
+	
+	public List<ProductVO> getProductsByNewest(String query, int offset, int limit) {
+
+		
+	    List<ProductVO> list = selectProductsByNewest(query, offset, limit);
+
+	    // 각 상품에 대해 대표 사진 설정
+	    for (ProductVO vo : list) {
+	        // 판매 상품 ID로 첫 번째 사진 조회
+	        PhotoVO photo = ProdDAO.selectFirstPhotoByprodId(vo.getProdId());
+	        if (photo != null && photo.getProdPhotoPath() != null && photo.getPhotoName() != null) {
+	            // 사진 경로와 이름 설정
+	            vo.setImagePath(photo.getProdPhotoPath());
+	        } else {
+	            // 사진이 없을 경우 기본 이미지 경로 설정
+	            vo.setImagePath("assets/img/noimg.png");
+	        }
+	    }
+	    return list;
+	}
+	
 	/**
      * 특정 상품의 상세 정보를 조회합니다.
      * @param sellId 조회할 상품 ID
@@ -144,6 +172,6 @@ public class ProductService {
     public CropQualityVO getCropMapping(String cropNameEn) {
         return ProdDAO.getCropMapping(cropNameEn);
     }
-	
+
 
 }

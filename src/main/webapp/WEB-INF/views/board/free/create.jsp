@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>글쓰기</title>
         <style>
-            /* container 스타일 */
+        /* container 스타일 */
         .container-board-write {
             width: 90%;
             max-width: 800px;
@@ -116,49 +116,51 @@
                 max-width: 200px;
             }
         }
-    </style>
-</head>
+    	</style>
+	</head>
 <body>
+
 <jsp:include page="/WEB-INF/inc/common/header.jsp"></jsp:include>
-<div class="container-board-write">
-    <c:set var="boardWriter" value="${userInfo.memId}" />
-    <!-- 제목 -->
-    <h1 class="board-write-title">게시글 작성</h1>
 
-    <!-- 게시글 작성 폼 -->
-    <form id="createPostForm" action="${pageContext.request.contextPath}/board/save" method="post" enctype="multipart/form-data">
-        <!-- Hidden input for boardWriter -->
-        <input type="hidden" name="boardWriter" value="${boardWriter}">
-
-        <!-- 제목 입력 -->
-        <div class="input-group-board">
-            <label for="title">제목</label>
-            <input type="text" id="title" name="boardTitle" placeholder="제목을 입력하세요" value="${board.title}" required>
-        </div>
-
-        <!-- 사진 업로드 -->
-        <div class="input-group-board">
-            <label for="fileUpload">사진</label>
-            <input type="file" id="fileUpload" name="file" accept="image/*">
-            <div class="image-preview-board">
-                <p>사진 미리보기</p>
-                <img id="imagePreview" src="https://via.placeholder.com/300" alt="사진 미리보기">
-            </div>
-        </div>
-
-        <!-- 내용 입력 -->
-        <div class="input-group-board">
-            <label for="content">내용</label>
-            <textarea id="content" name="boardContents" placeholder="내용을 입력하세요" required>${board.content}</textarea>
-        </div>
-
-        <!-- 버튼 영역 -->
-        <div class="button-group-board">
-            <button type="submit" id="submitBtn">등록</button>
-            <button type="button" class="cancel" id="cancelBtn">취소</button>
-        </div>
-    </form>
-</div>
+	<div class="container-board-write">
+	    <c:set var="boardWriter" value="${userInfo.memId}" />
+	    <!-- 제목 -->
+	    <h1 class="board-write-title">게시글 작성</h1>
+	
+	    <!-- 게시글 작성 폼 -->
+	    <form id="createPostForm" action="${pageContext.request.contextPath}/board/save" method="post" enctype="multipart/form-data">
+	        <!-- Hidden input for boardWriter -->
+	        <input type="hidden" name="boardWriter" value="${boardWriter}">
+	
+	        <!-- 제목 입력 -->
+	        <div class="input-group-board">
+	            <label for="title">제목</label>
+	            <input type="text" id="title" name="boardTitle" placeholder="제목을 입력하세요" value="${board.title}" required>
+	        </div>
+	
+	        <!-- 사진 업로드 -->
+	        <div class="input-group-board">
+	            <label for="fileUpload">사진</label>
+	            <input type="file" id="fileUpload" name="file" accept="image/*">
+	            <div class="image-preview-board">
+	                <p>사진 미리보기</p>
+	                <img id="imagePreview" src="https://via.placeholder.com/300" alt="사진 미리보기">
+	            </div>
+	        </div>
+	
+	        <!-- 내용 입력 -->
+	        <div class="input-group-board">
+	            <label for="content">내용</label>
+	            <textarea id="content" name="boardContents" placeholder="내용을 입력하세요" required>${board.content}</textarea>
+	        </div>
+	
+	        <!-- 버튼 영역 -->
+	        <div class="button-group-board">
+	            <button type="submit" id="submitBtn">등록</button>
+	            <button type="button" class="cancel" id="cancelBtn">취소</button>
+	        </div>
+	    </form>
+	</div>
 
 <script>
     // 작성 버튼 클릭 시 유효성 검증
@@ -196,6 +198,8 @@
         }
     });
 </script>
+
 <jsp:include page="/WEB-INF/inc/common/footer.jsp"></jsp:include>
+
 </body>
 </html>

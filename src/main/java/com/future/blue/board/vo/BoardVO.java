@@ -3,13 +3,11 @@
 package com.future.blue.board.vo;
 
 import java.util.Arrays;
-
 import java.util.List;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
 import lombok.Data;
+
 	@Data
     public class BoardVO {
     	@NotBlank(message = "제목을 입력하세요.")
@@ -32,14 +30,11 @@ import lombok.Data;
         private String fileName;       		// 파일명
         private String filePath; 	   		// 파일 경로 저장
         private int fileId;            		// 파일 넘버
-        
-        private int commentId;         		// 댓글 ID
+        private List<BoardVO> files;        // 파일 목록
+        private int commentId;         		// 댓글 넘버
         private String commentContent; 		// 댓글 내용
         private int parentCommentId;   		// 부모 댓글(대댓글)
-        
-        private List<BoardVO> comments; 	// 댓글 목록
-        private List<BoardVO> files;        // 파일 목록
-        
+        private List<BoardVO> comments; 	// 댓글 목록 
         private int likeId;           		// 좋아요 넘버
         private String likeMemId;    		// 좋아요 클릭한 회원 ID
         

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -80,7 +82,14 @@ public class FileController {
 
         // 캐시 제어 및 파일 다운로드 설정
         response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Content-Disposition", "attachment; filename=" + imageFileName);
+        // 인코딩
+        String encodedFilename = URLEncoder.encode(imageFileName, StandardCharsets.UTF_8)
+                                    .replaceAll("\\+", "%20");
+
+        // 표준에 맞춰 filename*=UTF-8''
+        // 만약 구형 브라우저 호환성도 고려한다면, filename=""도 병행
+        response.setHeader("Content-Disposition", 
+           "attachment; filename*=UTF-8''" + encodedFilename);
 
         try (FileInputStream in = new FileInputStream(file);
              OutputStream out = response.getOutputStream()) {

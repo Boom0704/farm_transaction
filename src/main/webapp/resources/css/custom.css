@@ -5,6 +5,14 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'rine';
+    src: url('/fonts/LINESeedKR.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+
 :root {
     --primary-color: #4CAF50; /* 자연을 연상시키는 녹색 */
     --secondary-color: #8BC34A; /* 보조 색상 */
@@ -13,6 +21,10 @@
     --light-color: #FFFFFF; /* 흰색 */
     --accent-color: #FF9800; /* 강조 색상 */
 }
+ /* h 태그와 strong 태그에 폰트 적용 */
+ h1, h2, h3, h4, h5, h6, strong {
+     font-family: 'rine', sans-serif;
+ }
 
 /* 공통 스타일 */
 body {
@@ -25,7 +37,7 @@ body {
 
 /* Top Utility Section */
 .header-utility {
-    background-color: #f9f9f9;
+    background-color: #f8f0ed;
     height: 40px;
 }
 
@@ -86,6 +98,7 @@ body {
     justify-content: space-between;
     max-width: 1200px;
     margin: 0 auto;
+    transform: translate(0, 0);
 }
 
 .header-dropdown-menu .menu-column {
@@ -120,7 +133,7 @@ body {
     font-size: 1.5rem;
 }
 .text-color{
-	color:#000000; 
+   color:#000000; 
 }
 /* 모바일 Offcanvas */
 .offcanvas-header-custom {
@@ -170,6 +183,7 @@ body {
     text-align: center;
     width: 100%;
     display: block; /* 기본값: 보이기 */
+    margin: 20px;
 }
 
 /* 모바일 전용 푸터 */

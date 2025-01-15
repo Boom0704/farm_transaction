@@ -15,26 +15,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <style>
+  :root {
+    --primary-color: #005100;
+  }
+
   .form-group {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
   }
+
   .form-group label {
     flex: 0 0 80px;
     font-weight: bold;
     margin-right: 10px;
   }
+
   .form-group input {
     flex: 1;
     padding: 5px 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
   }
+
   .form-group button {
     margin-left: 10px;
     padding: 5px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
   }
+
+  .form-group button:hover {
+    background-color: #003b00;
+  }
+
   #map {
     width: 80%;
     height: 250px;
@@ -42,27 +58,33 @@
     border: 1px solid #ddd;
     border-radius: 5px;
   }
+
   .modal-content {
     border-radius: 10px;
     background-color: #ffffff;
     border: 2px solid var(--primary-color);
   }
+
   .modal-header {
     background-color: var(--primary-color);
     color: white;
     border-bottom: 2px solid var(--primary-color);
     font-weight: bold;
+    font-size: 1.2rem; /* 헤더 크기 축소 */
   }
+
   .modal-footer {
     border-top: 2px solid var(--primary-color);
   }
+
   .btn-secondary {
     background-color: var(--primary-color);
     border: none;
     color: white;
   }
+
   .btn-secondary:hover {
-    background-color: #3e8e41;
+    background-color: #003b00;
   }
 </style>
 
@@ -71,25 +93,25 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="promiseModalLabel">약속 잡기</h5>
+        <h5 class="modal-title" id="promiseModalLabel"><strong>약속 잡기</strong></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <!-- 날짜 -->
         <div class="form-group">
-          <label for="tmMeetDate">날짜:</label>
+          <label for="tmMeetDate"><strong>날짜:</strong></label>
           <input type="date" id="tmMeetDate" name="tmMeetDate">
         </div>
 
         <!-- 시간 -->
         <div class="form-group">
-          <label for="tmMeetTime">시간:</label>
+          <label for="tmMeetTime"><strong>시간:</strong></label>
           <input type="time" id="tmMeetTime" name="tmMeetTime">
         </div>
 
         <!-- 거래 희망 장소 -->
         <div class="form-group">
-          <label for="fullAddr">약속 장소:</label>
+          <label for="fullAddr"><strong>약속 장소:</strong></label>
           <input type="text" id="fullAddr" name="tmMeetPlace" placeholder="주소를 입력해주세요" readonly>
           <button type="button" class="btn btn-secondary" onclick="fn_search()">주소 검색</button>
         </div>

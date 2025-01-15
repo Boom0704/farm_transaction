@@ -14,4 +14,8 @@ public class CommentVO {
     private Integer parentCommentId; // 부모 댓글 ID (없으면 null)
     private char useYn;             // 댓글 사용 여부 (Y: 사용, N: 삭제)
     private String memId;           // 댓글 작성자 ID (회원 아이디)
+    
+    public String getUseYnStr() {
+        return String.valueOf(useYn);
+    }
 }

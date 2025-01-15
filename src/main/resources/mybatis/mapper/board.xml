@@ -136,7 +136,7 @@
     </update>
 
     <!-- 파일 추가 -->
-    <insert id="addBoardFile" parameterType="com.future.blue.board.vo.BoardFileVO">
+    <insert id="addBoardFile" parameterType="com.future.blue.board.vo.BoardVO">
 		<selectKey keyProperty="fileId" resultType="int" order="BEFORE">
 	        SELECT BOARD_FILE_SEQ.NEXTVAL FROM dual
 	    </selectKey>
@@ -155,7 +155,7 @@
     </insert>
 
     <!-- 특정 게시글의 파일 목록 조회 -->
-    <select id="getBoardFiles" resultType="com.future.blue.board.vo.BoardFileVO">
+    <select id="getBoardFiles" resultType="com.future.blue.board.vo.BoardVO">
         SELECT * 
         FROM BOARD_FILE
         WHERE BOARD_ID = #{boardId}
@@ -164,7 +164,11 @@
 
 
     <!-- 댓글 작성 -->
-    <insert id="addComment" parameterType="com.future.blue.board.vo.BoardCommentVO">
+    <insert id="addComment" parameterType="com.future.blue.board.vo.BoardVO">
+    	<selectKey keyProperty="commentId" resultType="int" order="BEFORE">
+	        SELECT  BOARD_COMMENT_SEQ.NEXTVAL FROM dual
+	    </selectKey>
+	    
 	    INSERT INTO BOARD_COMMENT (
 	        COMMENT_ID, 
 	        BOARD_ID,  
@@ -175,15 +179,33 @@
 	        USE_YN
 	    ) 
 	    VALUES (
-	        BOARD_COMMENT_SEQ.NEXTVAL,  <!-- 자동 증가 처리 --> 
+	        #{commentId},  <!-- 자동 증가 처리 --> 
 	        #{boardId},  
 	        #{commentContent}, 
 	        SYSDATE,
 	        SYSDATE, 
-	        #{parentCommentId}, 
+	        NULL, 
 	        'Y'
     	)
 	</insert>
+	
+	<!-- 댓글 조회  -->
+	<select id="getComments" resultType="com.future.blue.board.vo.BoardVO">
+        SELECT 
+		    COMMENT_ID, 
+		    BOARD_ID,  
+		    COMMENT_CONTENT, 
+		    CREATE_DT, 
+		    UPDATE_DT, 
+		    PARENT_COMMENT_ID, 
+		    USE_YN
+		FROM 
+		    BOARD_COMMENT
+		WHERE 
+		    BOARD_ID = #{boardId}  
+		ORDER BY 
+    	COMMENT_ID DESC
+    </select>
 	
 	<!-- 댓글 수정  -->
  	<update id="updateComment" >
@@ -198,7 +220,7 @@
     </update>
             
     <!-- 댓글 삭제 -->
-    <update id="deleteCommentLogical" parameterType="int">
+    <update id="deleteComment" parameterType="int">
     	UPDATE BOARD_COMMENT
     	SET 
         	USE_YN = 'N'
@@ -207,22 +229,22 @@
         	AND USE_YN = 'Y'  <!-- 삭제된 댓글이 다시 수정되지 않도록 조건 추가 -->
 	</update>
 
-    <!-- 특정 게시글의 댓글 목록 조회 -->
-    <select id="getComments" resultType="com.future.blue.board.vo.BoardCommentVO">
+    <!-- 특정 게시글의 댓글 목록 조회 
+    <select id="getComments" resultType="com.future.blue.board.vo.BoardVO">
         SELECT * 
         FROM BOARD_COMMENT
         WHERE BOARD_ID = #{boardId}
         ORDER BY CREATE_DT ASC
-    </select>
+    </select> -->
     
     <!-- 좋아요 추가 -->
-    <insert id="addLike" parameterType="com.future.blue.board.vo.BoardLikeVO">
+    <insert id="addLike" parameterType="com.future.blue.board.vo.BoardVO">
         INSERT INTO BOARD_LIKE (LIKE_ID, BOARD_ID, LIKE_MEM_ID, COMMENT_ID, CREATE_DT, USE_YN)
         VALUES (#{likeId}, #{boardId}, #{likeMemId}, #{commentId}, SYSDATE, 'Y')
     </insert>
 
     <!-- 좋아요 삭제 -->
-    <delete id="removeLike" parameterType="com.future.blue.board.vo.BoardLikeVO">
+    <delete id="removeLike" parameterType="com.future.blue.board.vo.BoardVO">
         DELETE FROM BOARD_LIKE
         WHERE BOARD_ID = #{boardId} 
           AND LIKE_MEM_ID = #{likeMemId}
@@ -236,7 +258,7 @@
     </select>
 
     <!-- 특정 사용자의 좋아요 여부 확인 (1이면 좋아요, 0이면 해당x.) -->
-<!--     <select id="getBoardList" resultType="com.future.blue.board.vo.BoardLikeVO">
+<!--     <select id="getBoardList" resultType="com.future.blue.board.vo.BoardVO">
         SELECT b.board_id AS boardId,
                b.title AS title,
                b.content AS content,

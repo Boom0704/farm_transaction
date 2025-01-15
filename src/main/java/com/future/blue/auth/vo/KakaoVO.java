@@ -14,4 +14,5 @@ public class KakaoVO {
 	private String memPass;
 	private String memPhone;
 	private String memAddr;
+	private String createDate;
  }

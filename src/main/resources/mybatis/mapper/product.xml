@@ -79,8 +79,24 @@
 			        #{prodId}
 			    )
 		</insert>
+	
+	<!-- 최신순 기본 상품 목록 조회 -->
+	<select id="selectProductsByNewest" parameterType="map" resultType="ProdVO">
+	    SELECT a.PROD_ID, 
+	           a.PROD_NAME, 
+	           a.PROD_PRICE, 
+	           a.PROD_PLACE, 
+	           a.CREATE_DT
+	    FROM PRODUCTS a
+	    WHERE a.PROD_STATUS = 'S'
+	    <if test="query != null and query != ''">
+	        AND a.PROD_NAME LIKE '%' || #{query} || '%'
+	    </if>
+	    ORDER BY a.CREATE_DT DESC
+	    OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+	</select>
 		
-		
+
 	<!-- 기본 상품 목록 조회 -->
 	<select id="selectProducts" parameterType="map" resultType="ProdVO">
 	    SELECT a.PROD_ID, 
@@ -91,16 +107,16 @@
 	           a.LATITUDE,
 	           a.LONGITUDE,
 	           ROUND(6371 * ACOS(
-               COS(#{latitude} * (3.141592653589793 / 180)) * COS(a.LATITUDE * (3.141592653589793 / 180)) *
-               COS((a.LONGITUDE - #{longitude}) * (3.141592653589793 / 180)) +
-               SIN(#{latitude} * (3.141592653589793 / 180)) * SIN(a.LATITUDE * (3.141592653589793 / 180))
-           ), 2) AS distance_km
+	           COS(#{latitude} * (3.141592653589793 / 180)) * COS(a.LATITUDE * (3.141592653589793 / 180)) *
+	           COS((a.LONGITUDE - #{longitude}) * (3.141592653589793 / 180)) +
+	           SIN(#{latitude} * (3.141592653589793 / 180)) * SIN(a.LATITUDE * (3.141592653589793 / 180))
+	       ), 2) AS distance_km
 	    FROM PRODUCTS a
 	    WHERE a.PROD_STATUS = 'S'
 	    <if test="query != null and query != ''">
 	        AND a.PROD_NAME LIKE '%' || #{query} || '%'
 	    </if>
-	    ORDER BY distance_km ASC, a.CREATE_DT DESC
+	    ORDER BY a.CREATE_DT DESC
 	    OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
 	</select>
 

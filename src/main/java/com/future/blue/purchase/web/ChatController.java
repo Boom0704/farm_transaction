@@ -38,53 +38,58 @@ public class ChatController {
 	@Autowired
 	private PushNotificationService pushService;
 	
+	//기존 채팅방 조회 및 생성, 초기 메시지 목록 처리를 담당합니다.
+	public String initializeChatRoom(Model model, RoomVO room, HttpServletRequest request) {
+	    // 1. 기존 채팅방 조회
+	    String chatId = chatService.checkChat(room);
+
+	    // 2. 채팅방이 없으면 새로운 채팅방 생성
+	    if (chatId == null) {
+	        chatId = chatService.getOrCreateChatRoom(room);
+	    }
+
+	    // 3. 채팅방의 메시지 목록 조회
+	    ArrayList<ChatVO> chatList = chatService.getChatList(chatId);
+
+	    // 4. 메시지 목록이 비어 있으면 빈 리스트로 초기화
+	    if (chatList == null || chatList.isEmpty()) {
+	        chatList = new ArrayList<>();
+	    }
+
+	    // 5. Model에 데이터 추가
+	    model.addAttribute("chatId", chatId);
+	    model.addAttribute("chatList", chatList);
+
+	    // 6. 추가 데이터 (예: 방 정보, 사용자 정보 등) 설정
+	    RoomVO roomView = chatService.getRoomDetails(chatId);
+	    if (roomView == null) {
+	        throw new IllegalArgumentException("유효하지 않은 채팅방 ID입니다.");
+	    }
+	    model.addAttribute("roomView", roomView);
+
+	    String memId = MemberUtil.getMemIdFromCookie(request);
+	    ReviewVO reviewVO = new ReviewVO();
+	    reviewVO.setRevWriter(memId);
+	    reviewVO.setRevProdId(roomView.getChatProdId());
+
+	    try {
+	        ReviewVO detailReview = chatService.getReview(reviewVO);
+	        model.addAttribute("detailReview", detailReview);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return "purchase/chat"; // 채팅 페이지로 리턴
+	}
+	
 	@RequestMapping("/chat")
 	public String chatView(Model model, RoomVO room, HttpServletRequest request) {
-		
-		
-		if (room.getChatSeller() != null && room.getChatBuyer() != null && room.getChatProdId() != null) { // getProId 에서 getChatProdId 이걸로 바꿈
-	        // 판매자와 구매자를 정렬하여 처리
-//	        String normalizedSeller = room.getChatSeller().compareTo(room.getChatBuyer()) < 0 
-//	                ? room.getChatSeller() 
-//	                : room.getChatBuyer();
-//	        String normalizedBuyer = room.getChatSeller().compareTo(room.getChatBuyer()) < 0 
-//	                ? room.getChatBuyer() 
-//	                : room.getChatSeller();
-//
-//	        room.setChatSeller(normalizedSeller);
-//	        room.setChatBuyer(normalizedBuyer);
-
-	        String chatId = chatService.checkChat(room); // 정렬된 정보를 기반으로 채팅방 조회
-	        if (chatId == null) {
-	            chatId = chatService.getOrCreateChatRoom(room); // 새로운 채팅방 생성
-	        }
-			ArrayList<ChatVO> chatList = chatService.getChatList(chatId); // 생성된 채팅방의 대화 내용 조회
-			model.addAttribute("chatId", chatId);
-			model.addAttribute("chatList", chatList);			
-
-			// 방정보 가져오기
-			RoomVO roomView = chatService.getRoomDetails(chatId);
-			System.out.println(roomView);
-			model.addAttribute("roomView", roomView);
-			
-			String memId = MemberUtil.getMemIdFromCookie(request);
-			ReviewVO reviewVO = new ReviewVO();
-			reviewVO.setRevWriter(memId);
-			reviewVO.setRevProdId(roomView.getChatProdId());
-			try {
-				ReviewVO detailReview = chatService.getReview(reviewVO);
-				model.addAttribute("detailReview",detailReview);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			
-		} else {
-			model.addAttribute("error", "채팅 방을 생성하기 위한 파라미터가 부족합니다.");
-			return "errorPage"; // 파라미터 부족 시 에러 처리
-		}
-		
-		return "purchase/chat"; // 채팅 페이지로 리턴
+	    if (room.getChatSeller() != null && room.getChatBuyer() != null && room.getChatProdId() != null) {
+	        return initializeChatRoom(model, room, request); // 새로운 메서드 호출
+	    } else {
+	        model.addAttribute("error", "채팅 방을 생성하기 위한 파라미터가 부족합니다.");
+	        return "errorPage";
+	    }
 	}
 
 	@RequestMapping("/list")
@@ -218,6 +223,36 @@ public class ChatController {
                 result.put("message", "후기를 찾을 수 없습니다.");
             }
         } catch(Exception e){
+            result.put("success", false);
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
+    
+    @GetMapping("/review/otherDetail")
+    @ResponseBody
+    public Map<String, Object> getOtherReviewDetail(
+        @RequestParam("revProdId") String revProdId,
+        @RequestParam("revWriter") String revWriter
+    ) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // 1) ReviewVO 구성
+            ReviewVO param = new ReviewVO();
+            param.setRevProdId(revProdId);
+            param.setRevWriter(revWriter);
+
+            // 2) DAO/Service에서 조회
+            ReviewVO review = chatService.getReview(param);
+
+            if (review != null) {
+                result.put("success", true);
+                result.put("review", review);
+            } else {
+                result.put("success", false);
+                result.put("message", "상대방이 작성한 후기가 없습니다.");
+            }
+        } catch (Exception e) {
             result.put("success", false);
             result.put("message", e.getMessage());
         }

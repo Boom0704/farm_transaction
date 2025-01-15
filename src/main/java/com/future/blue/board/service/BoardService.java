@@ -81,7 +81,7 @@ public class BoardService {
     @Transactional
     public void saveBoard(BoardVO boardVO, MultipartFile file) throws IOException {
         // 1. 게시글 정보 저장
-        boardDAO.insertBoard(boardVO);
+        boardDAO.createBoard(boardVO);
 
         // 2. 파일 처리 (파일 있을 경우)
         if (file != null && !file.isEmpty()) {
@@ -107,7 +107,7 @@ public class BoardService {
 	@Transactional
 	public int updateBoard(BoardVO board) {
 	    try {
-	        return boardDAO.updateBoard(boardId);
+	        return boardDAO.updateBoard(board);
 	    } catch (DataAccessException e) {
 	        throw new RuntimeException("게시글 수정 중 오류 발생", e);
 	    }
@@ -160,9 +160,9 @@ public class BoardService {
 
 	// 좋아요 제거
     @Transactional
-    public void removeLike(BoardVO likeId) {
+    public void likeCencel(BoardVO likeId) {
         try {
-            boardDAO.removeLike(likeId);
+            boardDAO.likeCencel(likeId);
         } catch (DataAccessException e) {
             throw new RuntimeException("좋아요 제거 중 오류 발생", e);
         }
@@ -173,6 +173,9 @@ public class BoardService {
         return boardDAO.getLikeCount(boardId);
     }
     
+    public BoardVO getBoardById(int boardId) {
+        return boardDAO.selectBoardById(boardId); // DAO에서 게시글 정보 가져오기
+    }
 
 	// 특정 사용자가 게시글에 좋아요를 눌렀는지 확인
 	/*
